@@ -1,30 +1,30 @@
 import mongoose from "mongoose";
 
 const RequiredDocumentSchema = new mongoose.Schema({
-    name: { type: String, required: true },
+    name: { type: String },
     sampleImage: { type: String, default: "" },
-    portalLink: { type: String, required: true },
+    portalLink: { type: String },
     videoLink: { type: String, default: "" }
 });
 
-const SESchema = new mongoose.Schema({
+const WWSchema = new mongoose.Schema({
     title: { type: String, required: true },
     shortDescription: { type: String, required: true },
     portalLink: { type: String, required: true },
     detailedDescription: { type: String, required: true },
     benefits: { type: [String], required: true },
-    eligibilityCriteria: { type: [String], required: true },
-    nonEligible: { type: [String], required: true },
+    eligibilityCriteria: { type: [String] },
+    nonEligible: { type: [String]},
     requiredDocuments: [RequiredDocumentSchema],
     applicationProcess: {
-        online: { type: [String], required: true },
-        offline: { type: [String], required: true }
+        online: { type: [String] },
+        offline: { type: [String] }
     },
     faqs: { type: [String], default: [] },
     imageUrl: { type: String, default: "" }
 });
 
 
-const SEModel=mongoose.models.SEModel ||mongoose.model("SEModel",SESchema);
+const WWModel=mongoose.models.WWModel ||mongoose.model("WWModel",WWSchema);
 
-export default SEModel;
+export default WWModel;

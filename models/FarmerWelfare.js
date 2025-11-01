@@ -7,7 +7,7 @@ const RequiredDocumentSchema = new mongoose.Schema({
     videoLink: { type: String, default: "" }
 });
 
-const SESchema = new mongoose.Schema({
+const FWSchema = new mongoose.Schema({
     title: { type: String, required: true },
     shortDescription: { type: String, required: true },
     portalLink: { type: String, required: true },
@@ -25,6 +25,6 @@ const SESchema = new mongoose.Schema({
 });
 
 
-const SEModel=mongoose.models.SEModel ||mongoose.model("SEModel",SESchema);
+const FWModel=mongoose.models.FWModel || mongoose.model("FWModel",FWSchema);
 
-export default SEModel;
+export default FWModel;

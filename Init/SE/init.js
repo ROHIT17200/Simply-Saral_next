@@ -1,3 +1,18 @@
+import dotenv from 'dotenv'; // Note: You need the full import now
+
+// Calculate the path to the project root directory
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// The .env file is 3 levels up from the current file's directory:
+// init.js -> Init/SE/init.js
+// .env is in -> Simply-Saral_next/
+const envPath = resolve(__dirname, '../../.env'); 
+
+dotenv.config({ path: envPath });
+
 import connection from "../../lib/conn.js";
 import SE from "../../models/SecondaryEducation.js"
 
@@ -247,6 +262,7 @@ const schemes = [
 
 const InsertData=async()=>{
     connection();
+    await SE.deleteMany();
     const ack=await SE.insertMany(schemes);
 }
 InsertData()
