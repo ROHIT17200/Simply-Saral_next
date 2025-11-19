@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import con from '../../../../lib/conn.js';
-import WWM from '../../../../models/FarmerWelfare.js';
+import con from '../../../../../(Initiation_Task)/lib/conn.js';
+import WWM from '../../../../../(Initiation_Task)/models/WomenWelfare.js';
 
 export async function GET() {
     await con();

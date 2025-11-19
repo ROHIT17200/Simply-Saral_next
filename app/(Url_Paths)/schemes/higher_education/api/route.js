@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import con from '../../../../lib/conn.js';
-import HEM from '../../../../models/HigherEducation.js';
+import con from '../../../../../(Initiation_Task)/lib/conn.js';
+import HEM from '../../../../../(Initiation_Task)/models/HigherEducation.js';
 
 export async function GET() {
     await con();
