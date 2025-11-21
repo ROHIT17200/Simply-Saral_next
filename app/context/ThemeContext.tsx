@@ -14,24 +14,20 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('light');
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     const savedTheme = (localStorage.getItem('theme') as Theme) || 'light';
     setTheme(savedTheme);
     document.documentElement.className = savedTheme;
   }, []);
 
   useEffect(() => {
-    if (mounted) {
-      document.documentElement.className = theme;
-      localStorage.setItem('theme', theme);
-    }
-  }, [theme, mounted]);
+    document.documentElement.className = theme;
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
   return (
