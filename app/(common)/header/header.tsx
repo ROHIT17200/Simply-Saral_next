@@ -7,8 +7,7 @@ import { Moon, Sun, Menu, X } from 'lucide-react';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme(); // Unchanged context logic
-
+  const { theme, toggleTheme } = useTheme();
   return (
     <>
       {/* Add global theme variables (from your old HomePage) */}

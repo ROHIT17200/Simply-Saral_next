@@ -80,7 +80,7 @@ const SCHEME_DATA = [
       "Access agricultural subsidies, crop insurance, soil health cards, and other support programs designed for farmers.",
     icon: Sprout,
     colorTheme: "green",
-    link: "/schemes/farmer_welfare",
+    link: "/schemes/farmer_schemes",
     features: [
       "Crop insurance schemes",
       "Agricultural subsidies",

@@ -42,9 +42,10 @@ const data= [
     },
     faqs: [], // No FAQs given
     imageUrl: "", 
-    LaunchYear:"2015",
+    launchedYear:2015,
     category:"Education & Skill Development",
     detailedPage:"BBBP",
+    icon:"GraduationCap"
   },
   {
     title: "Ladki Bahin Yojana (Mukhya Mantri Mazi Ladki Bahin Yojana)",
@@ -85,9 +86,10 @@ const data= [
     },
     faqs: [], // Not provided
     imageUrl: "",
-    LaunchYear:"2023",
+    launchedYear:2023,
     category:"Financial Assistance & Social Security",
     detailedPage:"LBY",
+    icon:'Shield'
   }
 ];
 

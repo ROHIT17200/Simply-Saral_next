@@ -7,7 +7,7 @@ const RequiredDocumentSchema = new mongoose.Schema({
     videoLink: { type: String, default: "" }
 });
 
-const HESchema = new mongoose.Schema({
+const FWSchema = new mongoose.Schema({
     title: { type: String, required: true },
     shortDescription: { type: String, required: true },
     portalLink: { type: String, required: true },
@@ -21,10 +21,14 @@ const HESchema = new mongoose.Schema({
         offline: { type: [String], required: true }
     },
     faqs: { type: [String], default: [] },
-    imageUrl: { type: String, default: "" }
+    imageUrl: { type: String, default: "" },
+    launchedYear:{ type: String, required: true },
+    category:{ type: String, required: true },
+    detailedPage:{ type: String, required: true },
+    icon:{ type: String, required: true },
 });
 
 
-const HEModel=mongoose.models.HEModel ||mongoose.model("HEModel",HESchema);
+const FWModel=mongoose.models.FWModel || mongoose.model("FWModel",FWSchema);
 
-export default HEModel;
+export default FWModel;
