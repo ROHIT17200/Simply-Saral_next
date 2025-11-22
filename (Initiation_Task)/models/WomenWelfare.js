@@ -21,7 +21,11 @@ const WWSchema = new mongoose.Schema({
         offline: { type: [String] }
     },
     faqs: { type: [String], default: [] },
-    imageUrl: { type: String, default: "" }
+    imageUrl: { type: String, default: "" },
+    launchedYear:{ type: String, required: true },
+    category:{ type: String, required: true },
+    detailedPage:{ type: String, required: true },
+    icon:{ type: String, required: true },
 });
 
 

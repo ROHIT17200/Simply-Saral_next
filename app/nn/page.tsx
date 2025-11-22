@@ -4,6 +4,7 @@ import { useTheme } from "@/app/context/ThemeContext";
 import {
   BookOpen,
   LayoutDashboard,
+  User,
   ChevronRight,
   ChevronLeft,
   Sun,
@@ -15,149 +16,153 @@ import {
   Search,
   Filter,
   Calendar,
-  Award,
-  GraduationCap,
-  Shield,
-  Flame,
-  Heart,
-  Users,
   Sparkles,
-  ShieldCheck,
-  HeartPulse,
-  Briefcase,
-  BadgeDollarSign,
-  Megaphone,
+  Award,
+  Heart,
+  Shield,
+  GraduationCap,
+  DollarSign,
+  Home,
+  Users,
+  Flame
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-// Typed icon name for serializable icon prop
-export type IconName =
-  | "BookOpen"
-  | "LayoutDashboard"
-  | "ChevronRight"
-  | "ChevronLeft"
-  | "Sun"
-  | "Moon"
-  | "UserCircle"
-  | "ChevronDown"
-  | "Home"
-  | "ArrowUp"
-  | "Search"
-  | "Filter"
-  | "Calendar"
-  | "Award"
-  | "GraduationCap"
-  | "Shield"
-  | "HomeIcon"
-  | "Flame"
-  | "Heart"
-  | "Users"
-  | "Sparkles"
-  "ShieldCheck"
-  "HeartPulse"
-  "Briefcase"
-  "BadgeDollarSign"
-  "Megaphone";
 
-// Type Definitions
-export interface SchemeData {
-  title: string;
-  shortDescription: string;
-  portalLink: string;
-  detailedDescription: string;
-  benefits: string[];
-  eligibilityCriteria: string[];
-  nonEligible: string[]; // array, even if blank
-  requiredDocuments: { name: string }[];
-  applicationProcess: {
-    online: string[];
-    offline: string[];
-  };
-  faqs: string[];
-  imageUrl: string;
-  launchedYear: number; 
-  category: string;
-  detailedPage: string;
-  icon: IconName;
-}
+// CONSTANTS AND DATA CONFIGURATION
 
-export interface CarouselSlide {
-  image: string;
-  title: string;
-  subtitle: string;
-}
+const SCHEME_CATEGORIES = {
+  EDUCATION: "Education",
+  FINANCIAL_ASSISTANCE: "Financial Assistance",
+  SOCIAL_SUPPORT: "Social Support",
+  HEALTH_WELFARE: "Health & Welfare",
+  FINANCIAL_SECURITY: "Financial Security"
+} as const;
 
-export interface FilterCategory {
-  heading: string;
-  items: Array<{
-    label: string;
-    icon: IconName;
-  }>;
-}
-
-export interface WelfareSchemesProps {
-  pageTitle: string;
-  pageSubtitle: string;
-  schemes: SchemeData[];
-  carouselSlides: CarouselSlide[];
-  filterCategories?: FilterCategory[];
-  defaultCategory?: string;
-  accentColor?: {
-    light: string;
-    dark: string;
-  };
-}
-
-// MAP of string names to Lucide icon components
-const iconMap: Record<string, React.ComponentType<any>> = {
-  BookOpen,
-  LayoutDashboard,
-  ChevronRight,
-  ChevronLeft,
-  Sun,
-  Moon,
-  UserCircle,
-  ChevronDown,
-  Home: HomeIcon,
-  ArrowUp,
-  Search,
-  Filter,
-  Calendar,
-  Award,
-  GraduationCap,
-  Shield,
-  HomeIcon,
-  Flame,
-  Heart,
-  Users,
-  Sparkles,
-  ShieldCheck,
-  HeartPulse,
-  Briefcase,
-  BadgeDollarSign,
-  Megaphone,
-};
-
-// Utility functions
-const getUniqueCategories = (schemes: SchemeData[]) => [
-  "All",
-  ...Array.from(new Set(schemes.map((scheme) => scheme.category))),
+const WOMEN_WELFARE_SCHEMES = [
+  {
+    id: 1,
+    title: "Beti Bachao, Beti Padhao",
+    category: SCHEME_CATEGORIES.EDUCATION,
+    launchedYear: 2015,
+    benefits: [
+      "Improve girl child sex ratio",
+      "Promote girls' education",
+      "Increase awareness in society"
+    ],
+    readMoreLink: "/schemes/women_Welfare/beti-bachao",
+    icon: GraduationCap
+  },
+  {
+    id: 2,
+    title: "Ladli Behna Yojana",
+    category: SCHEME_CATEGORIES.FINANCIAL_ASSISTANCE,
+    launchedYear: 2018,
+    benefits: [
+      "Microfinance for women",
+      "Skill-building for self-help groups",
+      "Direct support for entrepreneurship"
+    ],
+    readMoreLink: "#",
+    icon: Shield
+  },
+  {
+    id: 3,
+    title: "Swadhar Greh",
+    category: SCHEME_CATEGORIES.SOCIAL_SUPPORT,
+    launchedYear: 2016,
+    benefits: [
+      "Short-term shelter for women in distress",
+      "Counselling and medical aid",
+      "Legal support services"
+    ],
+    readMoreLink: "#",
+    icon: Home
+  },
+  {
+    id: 4,
+    title: "Ujjwala Yojana",
+    category: SCHEME_CATEGORIES.HEALTH_WELFARE,
+    launchedYear: 2016,
+    benefits: [
+      "Free LPG connections for women",
+      "Promotes clean energy",
+      "Improved household health"
+    ],
+    readMoreLink: "#",
+    icon: Flame
+  },
+  {
+    id: 5,
+    title: "Sukanya Samriddhi Yojana",
+    category: SCHEME_CATEGORIES.FINANCIAL_SECURITY,
+    launchedYear: 2015,
+    benefits: [
+      "Savings for girl child",
+      "Attractive interest rates",
+      "Supports education & marriage expenses"
+    ],
+    readMoreLink: "#",
+    icon: Shield
+  },
 ];
 
-const getUniqueYears = (schemes: SchemeData[]) => [
-  "All Years",
-  ...Array.from(
-    new Set(schemes.map((scheme) => scheme.launchedYear.toString()))
-  ).sort(),
+const CAROUSEL_SLIDES = [
+  { 
+    image: "/Images/women_welf/beti_Bachao.jpg",
+    title: "Education Empowerment",
+    subtitle: "Building brighter futures through education"
+  },
+  { 
+    image: "/Images/women_welf/ladki_bahin.jpg",
+    title: "Financial Independence",
+    subtitle: "Supporting women's economic growth"
+  },
+  { 
+    image: "/Images/women_welf/swadhar_grih.jpg",
+    title: "Social Support",
+    subtitle: "Creating safe spaces for women"
+  },
+  { 
+    image: "/Images/women_welf/women-emp.webp",
+    title: "Women Empowerment",
+    subtitle: "Transforming lives, building nation"
+  }
 ];
 
-// Navigation items use string icon names
 const NAVIGATION_ITEMS = [
-  { label: "Home", icon: "Home", path: "/" },
-  { label: "Schemes", icon: "LayoutDashboard", path: "/schemes" },
+  { label: "Home", icon: HomeIcon, path: "/" },
+  { label: "Schemes", icon: LayoutDashboard, path: "/schemes" },
 ];
 
-// SidebarHeader
+const FILTER_CATEGORIES = [
+  {
+    heading: "Category",
+    items: [
+      { label: "All", icon: Sparkles },
+      { label: SCHEME_CATEGORIES.EDUCATION, icon: GraduationCap },
+      { label: "Health", icon: Heart },
+      { label: SCHEME_CATEGORIES.SOCIAL_SUPPORT, icon: Users },
+    ],
+  },
+];
+
+
+// UTILITY FUNCTIONS
+
+const getUniqueCategories = () => [
+  "All",
+  ...Array.from(new Set(WOMEN_WELFARE_SCHEMES.map((scheme) => scheme.category)))
+];
+
+const getUniqueYears = () => [
+  "All Years",
+  ...Array.from(new Set(WOMEN_WELFARE_SCHEMES.map((scheme) => scheme.launchedYear.toString()))).sort()
+];
+
+
+// COMPONENTS
+
 interface SidebarHeaderProps {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -175,11 +180,7 @@ const SidebarHeader = ({ open, setOpen, theme }: SidebarHeaderProps) => (
         }`}
       />
       {open && (
-        <div
-          className={`text-2xl font-bold tracking-tight ${
-            theme === "dark" ? "text-white" : "text-blue-700"
-          }`}
-        >
+        <div className={`text-2xl font-bold tracking-tight ${theme === "dark" ? "text-white" : "text-blue-700"}`}>
           Simply <span className="text-amber-500">Saral</span>
         </div>
       )}
@@ -192,14 +193,15 @@ const SidebarHeader = ({ open, setOpen, theme }: SidebarHeaderProps) => (
         shadow-xl transition-transform duration-300 group"
       style={{ boxShadow: "0 2px 16px 0 rgba(59,130,246, 0.17)" }}
     >
-      {open
-        ? React.createElement(iconMap["ChevronLeft"], { className: "text-blue-500 w-5 h-5" })
-        : React.createElement(iconMap["ChevronRight"], { className: "text-blue-500 w-5 h-5" })}
+      {open ? (
+        <ChevronLeft className="text-blue-500 w-5 h-5" />
+      ) : (
+        <ChevronRight className="text-blue-500 w-5 h-5" />
+      )}
     </button>
   </div>
 );
 
-// Sidebar
 interface SidebarProps {
   theme: "light" | "dark";
   toggleTheme: () => void;
@@ -207,7 +209,6 @@ interface SidebarProps {
   setOpen: (open: boolean) => void;
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
-  filterCategories?: FilterCategory[];
 }
 
 const Sidebar = ({
@@ -216,13 +217,9 @@ const Sidebar = ({
   open,
   setOpen,
   selectedCategory,
-  setSelectedCategory,
-  filterCategories = [],
+  setSelectedCategory
 }: SidebarProps) => {
-  const [expandedSection, setExpandedSection] = useState<string | null>(
-    filterCategories.length > 0 ? filterCategories[0].heading : null
-  );
-
+  const [expandedSection, setExpandedSection] = useState<string | null>("Category");
   const router = useRouter();
   const isDark = theme === "dark";
 
@@ -235,7 +232,7 @@ const Sidebar = ({
   };
 
   const toggleSection = (heading: string) => {
-    setExpandedSection((prev) => (prev === heading ? null : heading));
+    setExpandedSection(prev => prev === heading ? null : heading);
   };
 
   const renderNavigationItem = (item: typeof NAVIGATION_ITEMS[0]) => (
@@ -245,21 +242,15 @@ const Sidebar = ({
         className={`w-full flex ${
           open ? "flex-row items-center gap-3 px-3" : "flex-col items-center gap-1 px-2"
         } py-2.5 rounded-lg transition-colors
-            ${
-              isDark
-                ? "hover:bg-gray-800 text-gray-300 hover:text-white"
-                : "hover:bg-gray-100 text-gray-700 hover:text-gray-900"
-            }`}
+          ${isDark
+            ? "hover:bg-gray-800 text-gray-300 hover:text-white"
+            : "hover:bg-gray-100 text-gray-700 hover:text-gray-900"
+          }`}
         title={item.label}
       >
-        {React.createElement(
-          iconMap[item.icon],
-          {
-            className: `flex-shrink-0 transition-all duration-300 ${
-              open ? "w-5 h-5" : "w-6 h-6"
-            }`,
-          }
-        )}
+        <item.icon className={`flex-shrink-0 transition-all duration-300 ${
+          open ? "w-5 h-5" : "w-6 h-6"
+        }`} />
         {!open && (
           <span className="text-xs font-medium text-center leading-tight">
             {item.label}
@@ -270,24 +261,22 @@ const Sidebar = ({
     </li>
   );
 
-  const renderFilterSection = (section: FilterCategory) => (
+  const renderFilterSection = (section: typeof FILTER_CATEGORIES[0]) => (
     <div key={section.heading} className="mb-2">
       <button
         onClick={() => toggleSection(section.heading)}
         className={`w-full flex items-center justify-between px-3 py-2 rounded-lg font-semibold uppercase tracking-wide text-xs
-            ${
-              isDark
-                ? "hover:bg-gray-800 text-gray-400 hover:text-gray-200"
-                : "hover:bg-gray-100 text-gray-600 hover:text-gray-800"
-            }`}
+          ${isDark
+            ? "hover:bg-gray-800 text-gray-400 hover:text-gray-200"
+            : "hover:bg-gray-100 text-gray-600 hover:text-gray-800"
+          }`}
       >
         <span>{section.heading}</span>
-        {React.createElement(iconMap["ChevronDown"], {
-          className: `w-4 h-4 transition-transform ${
-            expandedSection === section.heading ? "rotate-180" : ""
-          }`,
-        })}
+        <ChevronDown
+          className={`w-4 h-4 transition-transform ${expandedSection === section.heading ? "rotate-180" : ""}`}
+        />
       </button>
+      
       {expandedSection === section.heading && (
         <ul className="mt-1 ml-3 space-y-1 border-l-2 border-pink-500 pl-3">
           {section.items.map((item) => (
@@ -295,17 +284,14 @@ const Sidebar = ({
               <button
                 onClick={() => handleCategorySelect(item.label)}
                 className={`w-full flex items-center gap-2 text-left px-3 py-2 rounded-lg text-sm transition-colors
-                  ${
-                    selectedCategory === item.label
-                      ? isDark
-                        ? "bg-blue-600 text-white"
-                        : "bg-pink-100 text-pink-700 font-semibold"
-                      : isDark
+                  ${selectedCategory === item.label
+                    ? isDark ? "bg-blue-600 text-white" : "bg-pink-100 text-pink-700 font-semibold"
+                    : isDark
                       ? "text-gray-400 hover:bg-gray-800 hover:text-gray-200"
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-800"
                   }`}
               >
-                {React.createElement(iconMap[item.icon], { className: "w-4 h-4 flex-shrink-0" })}
+                <item.icon className="w-4 h-4 flex-shrink-0" />
                 <span>{item.label}</span>
               </button>
             </li>
@@ -323,29 +309,33 @@ const Sidebar = ({
         border-r shadow-md`}
     >
       <SidebarHeader open={open} setOpen={setOpen} theme={theme} />
-
+      
       <nav className="flex-1 overflow-y-auto py-4">
         <ul className="space-y-2 px-2">
           {NAVIGATION_ITEMS.map(renderNavigationItem)}
         </ul>
-        {open && filterCategories.length > 0 && (
+
+        {open && (
           <div className="mt-6 px-2 space-y-1">
-            {filterCategories.map(renderFilterSection)}
+            {FILTER_CATEGORIES.map(renderFilterSection)}
           </div>
         )}
       </nav>
+
       <div className={`border-t ${isDark ? "border-gray-700" : "border-blue-400"} p-2 space-y-2`}>
         <button
           onClick={toggleTheme}
           className={`w-full flex ${
             open ? "flex-row items-center gap-3 px-3" : "flex-col items-center gap-1 px-2"
           } py-2.5 rounded-lg transition-colors
-              ${isDark ? "hover:bg-gray-800 text-gray-300" : "hover:bg-gray-100 text-gray-700"}`}
+            ${isDark ? "hover:bg-gray-800 text-gray-300" : "hover:bg-gray-100 text-gray-700"}`}
           title={isDark ? "Light mode" : "Dark mode"}
         >
-          {isDark
-            ? React.createElement(iconMap["Sun"], { className: `flex-shrink-0 transition-all duration-300 ${open ? "w-5 h-5" : "w-6 h-6"}` })
-            : React.createElement(iconMap["Moon"], { className: `flex-shrink-0 transition-all duration-300 ${open ? "w-5 h-5" : "w-6 h-6"}` })}
+          {isDark ? (
+            <Sun className={`flex-shrink-0 transition-all duration-300 ${open ? "w-5 h-5" : "w-6 h-6"}`} />
+          ) : (
+            <Moon className={`flex-shrink-0 transition-all duration-300 ${open ? "w-5 h-5" : "w-6 h-6"}`} />
+          )}
           {!open && (
             <span className="text-xs font-medium text-center leading-tight">
               {isDark ? "Light" : "Dark"}
@@ -357,15 +347,16 @@ const Sidebar = ({
             </span>
           )}
         </button>
+
         <button
           onClick={() => handleNavigation("/profile")}
           className={`w-full flex ${
             open ? "flex-row items-center gap-3 px-3" : "flex-col items-center gap-1 px-2"
           } py-2.5 rounded-lg transition-colors
-              ${isDark ? "hover:bg-gray-800 text-gray-300" : "hover:bg-gray-100 text-gray-700"}`}
+            ${isDark ? "hover:bg-gray-800 text-gray-300" : "hover:bg-gray-100 text-gray-700"}`}
           title="Profile"
         >
-          {React.createElement(iconMap["UserCircle"], { className: `flex-shrink-0 transition-all duration-300 ${open ? "w-5 h-5" : "w-6 h-6"}` })}
+          <UserCircle className={`flex-shrink-0 transition-all duration-300 ${open ? "w-5 h-5" : "w-6 h-6"}`} />
           {!open && <span className="text-xs font-medium text-center leading-tight">Profile</span>}
           {open && <span className="text-sm font-medium tracking-wide">Profile</span>}
         </button>
@@ -374,18 +365,15 @@ const Sidebar = ({
   );
 };
 
-// SchemeCard
 interface SchemeCardProps {
-  scheme: SchemeData;
+  scheme: typeof WOMEN_WELFARE_SCHEMES[0];
   theme: "light" | "dark";
-  accentColor?: { light: string; dark: string };
 }
 
-const SchemeCard = ({ scheme, theme, accentColor }: SchemeCardProps) => {
-  const SchemeIcon = iconMap[scheme.icon];
+const SchemeCard = ({ scheme, theme }: SchemeCardProps) => {
+  const SchemeIcon = scheme.icon;
   const isDark = theme === "dark";
-  const lightAccent = accentColor?.light || "blue-500";
-  const darkAccent = accentColor?.dark || "blue-400";
+
   return (
     <div
       className={`rounded-xl p-6 transition-all duration-400 hover:shadow-xl border ${
@@ -395,28 +383,33 @@ const SchemeCard = ({ scheme, theme, accentColor }: SchemeCardProps) => {
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-3">
-            <div className={`p-2 rounded-lg ${isDark ? "bg-orange-500/20" : "bg-blue-100"}`}>
-              {SchemeIcon
-                ? React.createElement(SchemeIcon, {
-                    className: `w-5 h-5 ${isDark ? `text-${darkAccent}` : `text-${lightAccent}`}`,
-                  })
-                : null}
+            <div className={`p-2 rounded-lg ${
+              isDark ? "bg-orange-500/20" : "bg-blue-100"
+            }`}>
+              <SchemeIcon className={`w-5 h-5 ${
+                isDark ? "text-blue-400" : "text-blue-600"
+              }`} />
             </div>
-            <h3 className={`text-xl font-semibold ${isDark ? `text-${darkAccent}` : `text-${lightAccent}`}`}>
+            <h3 className={`text-xl font-semibold ${
+              isDark ? "text-blue-400" : "text-blue-500"
+            }`}>
               {scheme.title}
             </h3>
           </div>
-          <div className={`text-sm flex items-center gap-4 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+          <div className={`text-sm flex items-center gap-4 ${
+            isDark ? "text-gray-400" : "text-gray-600"
+          }`}>
             <span className="flex items-center gap-2 font-semibold text-green-600">
-              {React.createElement(iconMap["Award"], { size: 16 })}
+              <Award size={16} />
               {scheme.category}
             </span>
             <span className="flex items-center gap-2">
-              {React.createElement(iconMap["Calendar"], { size: 16 })}
+              <Calendar size={16} />
               Launched: {scheme.launchedYear}
             </span>
           </div>
         </div>
+        
         <div className="flex items-center justify-center ml-6">
           <a
             href={scheme.readMoreLink}
@@ -426,9 +419,11 @@ const SchemeCard = ({ scheme, theme, accentColor }: SchemeCardProps) => {
                 : "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-500 hover:to-blue-500"
             }`}
           >
-            {React.createElement(iconMap["BookOpen"], { size: 18, className: "mr-2" })}
+            <BookOpen size={18} className="mr-2" />
             Read More
-            <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
+            <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">
+              →
+            </span>
             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
           </a>
         </div>
@@ -437,51 +432,44 @@ const SchemeCard = ({ scheme, theme, accentColor }: SchemeCardProps) => {
   );
 };
 
-// MAIN REUSABLE COMPONENT
-const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
-  pageTitle,
-  pageSubtitle,
-  schemes,
-  carouselSlides,
-  filterCategories = [],
-  defaultCategory = "All",
-  accentColor = { light: "blue-600", dark: "orange-400" },
-}) => {
+
+// MAIN PAGE COMPONENT
+
+const WomenWelfareSchemesPage = () => {
   // State Management
-  const { theme, setTheme } = useTheme();
+  const {theme, setTheme} = useTheme();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(defaultCategory);
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedYear, setSelectedYear] = useState("All Years");
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Derived Data
-  const categoryOptions = getUniqueCategories(schemes);
-  const yearOptions = getUniqueYears(schemes);
-
-  const hasActiveFilters =
-    searchQuery !== "" || selectedCategory !== "All" || selectedYear !== "All Years";
-
-  const displayedSchemes = schemes.filter((scheme) => {
+  const categoryOptions = getUniqueCategories();
+  const yearOptions = getUniqueYears();
+  
+  const hasActiveFilters = searchQuery !== "" || selectedCategory !== "All" || selectedYear !== "All Years";
+  
+  const displayedSchemes = WOMEN_WELFARE_SCHEMES.filter(scheme => {
     const matchesCategory = selectedCategory === "All" || scheme.category === selectedCategory;
     const matchesYear = selectedYear === "All Years" || scheme.launchedYear.toString() === selectedYear;
-    const matchesSearch =
-      searchQuery === "" ||
+    const matchesSearch = searchQuery === "" || 
       scheme.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       scheme.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      scheme.benefits.some((benefit) => benefit.toLowerCase().includes(searchQuery.toLowerCase()));
-
+      scheme.benefits.some(benefit => benefit.toLowerCase().includes(searchQuery.toLowerCase()));
+    
     return matchesCategory && matchesYear && matchesSearch;
   });
 
-  // Theme load & effect
+  // Initialize theme from localStorage and sync across pages
   useEffect(() => {
     const savedTheme = (localStorage.getItem("theme") as "light" | "dark") || "light";
     setTheme(savedTheme);
     document.body.className = savedTheme;
 
+    // Listen for theme changes from other pages/tabs
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "theme" && e.newValue) {
         const newTheme = e.newValue as "light" | "dark";
@@ -490,6 +478,7 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
       }
     };
 
+    // Listen for custom theme change events (same page)
     const handleThemeChange = (e: CustomEvent) => {
       const newTheme = e.detail as "light" | "dark";
       setTheme(newTheme);
@@ -498,29 +487,29 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
 
     window.addEventListener("storage", handleStorageChange);
     window.addEventListener("themeChange" as any, handleThemeChange);
-
+    
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("themeChange" as any, handleThemeChange);
     };
-  }, [setTheme]);
+  }, []);
 
   // Carousel and scroll effects
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
+      setCurrentSlide(prev => (prev + 1) % CAROUSEL_SLIDES.length);
     }, 4000);
 
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 200);
     };
-
+    
     window.addEventListener("scroll", handleScroll);
     return () => {
       clearInterval(interval);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [carouselSlides.length]);
+  }, []);
 
   // Event Handlers
   const toggleTheme = () => {
@@ -528,6 +517,8 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
     setTheme(newTheme);
     document.body.className = newTheme;
     localStorage.setItem("theme", newTheme);
+    
+    // Dispatch custom event for same-page components
     window.dispatchEvent(new CustomEvent("themeChange", { detail: newTheme }));
   };
 
@@ -537,36 +528,38 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
 
   return (
     <div className={`min-h-screen transition-colors duration-300 font-sans ${
-      theme === "dark"
-        ? "bg-slate-950 text-slate-100"
+      theme === "dark" 
+        ? "bg-slate-950 text-slate-100" 
         : "bg-gradient-to-br from-blue-50 via-orange-50 to-green-50 text-gray-900"
     }`}>
-      <Sidebar
+      
+      <Sidebar 
         theme={theme}
         toggleTheme={toggleTheme}
         open={sidebarOpen}
         setOpen={setSidebarOpen}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
-        filterCategories={filterCategories}
       />
+
       <div className={`transition-all duration-300 ${sidebarOpen ? "ml-60" : "ml-20"}`}>
         <div className="p-5">
           {/* Header Section */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold tracking-tight mb-2">
-              <span className={`${theme === "dark" ? `text-${accentColor.dark}` : `text-${accentColor.light}`}`}>
-                {pageTitle}
+              <span className={`${theme === "dark" ? "text-orange-400" : "text-blue-700"}`}>
+                Women Welfare Schemes
               </span>
             </h1>
             <p className={`text-base ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-              {pageSubtitle}
+              Discover government initiatives empowering women across India
             </p>
           </div>
+
           {/* Carousel Section */}
           <div className="bg-black rounded-2xl overflow-hidden mb-5 h-70 relative shadow-2xl">
             <div className="relative w-full h-full">
-              {carouselSlides.map((slide, index) => (
+              {CAROUSEL_SLIDES.map((slide, index) => (
                 <div
                   key={index}
                   className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
@@ -575,45 +568,43 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
                   style={{
                     backgroundImage: `url('${slide.image}')`,
                     backgroundSize: "cover",
-                    backgroundPosition: "center",
+                    backgroundPosition: "center"
                   }}
                 />
               ))}
             </div>
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-transparent to-transparent px-8 py-6 text-white">
               <h2 className="text-2xl font-bold mb-2 tracking-wide">
-                {carouselSlides[currentSlide].title}
+                {CAROUSEL_SLIDES[currentSlide].title}
               </h2>
               <p className="text-lg text-gray-200 font-light">
-                {carouselSlides[currentSlide].subtitle}
+                {CAROUSEL_SLIDES[currentSlide].subtitle}
               </p>
             </div>
             <div className="absolute bottom-4 right-8 flex gap-2">
-              {carouselSlides.map((_, index) => (
+              {CAROUSEL_SLIDES.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === currentSlide
-                      ? "bg-white scale-125"
+                    index === currentSlide 
+                      ? "bg-white scale-125" 
                       : "bg-white/50 hover:bg-white/80"
                   }`}
                 />
               ))}
             </div>
           </div>
+
           {/* Search and Filters Section */}
           <div className={`rounded-2xl p-2 mb-6 shadow-xl ${
             theme === "dark" ? "bg-slate-900" : "bg-white"
           }`}>
             <div className="flex gap-2 mb-1">
               <div className="relative flex-1">
-                {React.createElement(iconMap["Search"], {
-                  className: `absolute left-4 top-1/2 transform -translate-y-1/2 ${
-                    theme === "dark" ? "text-gray-400" : "text-gray-500"
-                  }`,
-                  size: 20,
-                })}
+                <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 ${
+                  theme === "dark" ? "text-gray-400" : "text-gray-500"
+                }`} size={20} />
                 <input
                   type="text"
                   placeholder="Search schemes by name, category, or benefits..."
@@ -626,6 +617,7 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
                   } focus:outline-none`}
                 />
               </div>
+              
               <button
                 onClick={() => setShowFilters(!showFilters)}
                 className={`flex items-center gap-3 px-6 py-3 rounded-xl font-semibold border transition-all duration-300 ${
@@ -638,7 +630,7 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
                       : "bg-white border-gray-300 text-blue-800 hover:bg-blue-50 hover:border-blue-400"
                 }`}
               >
-                {React.createElement(iconMap["Filter"], { size: 20 })}
+                <Filter size={20} />
                 <span className="text-base">Filters</span>
                 {(selectedCategory !== "All" || selectedYear !== "All Years") && (
                   <span className={`ml-1 px-2 py-1 rounded-full text-xs font-bold ${
@@ -649,6 +641,7 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
                 )}
               </button>
             </div>
+
             {/* Filter Options */}
             <div className={`overflow-hidden transition-all duration-300 ${
               showFilters ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
@@ -656,17 +649,14 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
               <div className="space-y-6 pt-4">
                 <div>
                   <div className="flex items-center gap-3 mb-4">
-                    {React.createElement(iconMap["Award"], {
-                      size: 18,
-                      className: theme === "dark" ? "text-orange-400" : "text-blue-600",
-                    })}
+                    <Award size={18} className={theme === "dark" ? "text-orange-400" : "text-blue-600"} />
                     <span className={`font-bold text-base ${
                       theme === "dark" ? "text-orange-400" : "text-blue-700"
                     }`}>Filter by Category</span>
                   </div>
                   <div className="flex gap-3 flex-wrap">
-                    {categoryOptions.map((option) => (
-                      <button
+                    {categoryOptions.map(option => (
+                      <button 
                         key={option}
                         onClick={() => setSelectedCategory(option)}
                         className={`px-4 py-2 rounded-full text-sm font-medium border-2 transition-all duration-300 flex items-center gap-2 ${
@@ -684,19 +674,17 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
                     ))}
                   </div>
                 </div>
+
                 <div>
                   <div className="flex items-center gap-3 mb-4">
-                    {React.createElement(iconMap["Calendar"], {
-                      size: 18,
-                      className: theme === "dark" ? "text-green-400" : "text-green-600",
-                    })}
+                    <Calendar size={18} className={theme === "dark" ? "text-green-400" : "text-green-600"} />
                     <span className={`font-bold text-base ${
                       theme === "dark" ? "text-green-400" : "text-green-700"
                     }`}>Filter by Launch Year</span>
                   </div>
                   <div className="flex gap-3 flex-wrap">
-                    {yearOptions.map((option) => (
-                      <button
+                    {yearOptions.map(option => (
+                      <button 
                         key={option}
                         onClick={() => setSelectedYear(option)}
                         className={`px-4 py-2 rounded-full text-sm font-medium border-2 transition-all duration-300 ${
@@ -716,39 +704,33 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
                 </div>
               </div>
             </div>
+
             {hasActiveFilters && (
               <div className={`mt-2 pt-2 border-t ${
                 theme === "dark" ? "border-slate-700" : "border-gray-200"
               }`}>
                 <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
                   Showing <span className="font-bold text-orange-600">{displayedSchemes.length}</span> of{" "}
-                  <span className="font-bold">{schemes.length}</span> schemes
+                  <span className="font-bold">{WOMEN_WELFARE_SCHEMES.length}</span> schemes
                 </p>
               </div>
             )}
           </div>
+
           {/* Schemes Display Section */}
           {displayedSchemes.length > 0 ? (
             <div className="grid gap-2">
               {displayedSchemes.map((scheme) => (
-                <SchemeCard
-                  key={scheme.id}
-                  scheme={scheme}
-                  theme={theme}
-                  accentColor={accentColor}
-                />
+                <SchemeCard key={scheme.id} scheme={scheme} theme={theme} />
               ))}
             </div>
           ) : (
             <div className={`text-center py-16 rounded-xl ${
               theme === "dark" ? "bg-slate-900" : "bg-white"
             } shadow-lg`}>
-              {React.createElement(iconMap["Search"], {
-                size: 48,
-                className: `mx-auto mb-4 ${
-                  theme === "dark" ? "text-gray-600" : "text-gray-400"
-                }`,
-              })}
+              <Search size={48} className={`mx-auto mb-4 ${
+                theme === "dark" ? "text-gray-600" : "text-gray-400"
+              }`} />
               <p className={`text-lg font-semibold mb-2 ${
                 theme === "dark" ? "text-gray-400" : "text-gray-600"
               }`}>
@@ -760,6 +742,7 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
             </div>
           )}
         </div>
+
         {/* Back to Top Button */}
         {showBackToTop && (
           <button
@@ -771,7 +754,7 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
             }`}
             title="Back to Top"
           >
-            {React.createElement(iconMap["ArrowUp"], { size: 20 })}
+            <ArrowUp size={20} />
             <div className="absolute inset-0 rounded-full bg-white/20 group-hover:animate-ping opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </button>
         )}
@@ -780,4 +763,4 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
   );
 };
 
-export default WelfareSchemesPage;
+export default WomenWelfareSchemesPage;
