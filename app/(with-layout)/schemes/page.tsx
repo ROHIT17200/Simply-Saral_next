@@ -8,26 +8,63 @@ import {
   Heart,
   Check,
   ArrowUp,
-  ChevronRight,
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-  Youtube,
-  Phone,
-  Mail,
-  MapPinned,
 } from "lucide-react";
-import Link from "next/link";
+
+// ============================================================================
+// TYPES & INTERFACES
+// ============================================================================
+
+interface Scheme {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  icon: React.ComponentType<any>;
+  colorTheme: "blue" | "green" | "purple";
+  link: string;
+  features: string[];
+}
+
+interface ThemeColors {
+  card: string;
+  accent: string;
+  icon: string;
+  text: string;
+  subtitle: string;
+  button: string;
+  border: string;
+}
+
+interface AnimationConfig {
+  defaultCardOverlap: number;
+  hoverCardOverlap: { min: number; max: number };
+  containerPadding: number;
+  cardTopPosition: { default: number; focused: number; blurred: number };
+  cardScale: { focused: number; blurred: number; default: number };
+  blurEffect: string;
+  boxShadow: { focused: string; default: string };
+  transition: string;
+  cardLeftShift: number;
+  maxContainerWidth: number;
+  mobileCardWidth: number;
+  tabletCardWidth: number;
+}
+
+interface SchemeCardProps {
+  scheme: Scheme;
+  isFocused: boolean;
+  isDarkMode: boolean;
+  isMobile: boolean;
+}
 
 // ============================================================================
 // CONSTANTS & CONFIGURATION
 // ============================================================================
 
-const ANIMATION_CONFIG = {
+const ANIMATION_CONFIG: AnimationConfig = {
   defaultCardOverlap: 90,
   hoverCardOverlap: { min: 60, max: 400 },
-  containerPadding: 40,
+  containerPadding: 20,
   cardTopPosition: { default: 50, focused: 0, blurred: 80 },
   cardScale: { focused: 1.15, blurred: 0.88, default: 1 },
   blurEffect: "brightness(0.92) blur(0.3px)",
@@ -38,10 +75,11 @@ const ANIMATION_CONFIG = {
   transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
   cardLeftShift: -100,
   maxContainerWidth: 1400,
+  mobileCardWidth: 320,
+  tabletCardWidth: 400,
 };
 
-
-const SCHEME_DATA = [
+const SCHEME_DATA: Scheme[] = [
   {
     id: "secondary-education",
     title: "Secondary Education",
@@ -104,13 +142,12 @@ const SCHEME_DATA = [
   },
 ];
 
-
 // ============================================================================
 // UTILITY FUNCTIONS
 // ============================================================================
 
-const getThemeColorClasses = (colorTheme, isDarkMode) => {
-  const themeColors = {
+const getThemeColorClasses = (colorTheme: "blue" | "green" | "purple", isDarkMode: boolean): ThemeColors => {
+  const themeColors: Record<"blue" | "green" | "purple", ThemeColors> = {
     blue: {
       card: isDarkMode
         ? "bg-gradient-to-br from-slate-800 to-slate-900"
@@ -148,12 +185,44 @@ const getThemeColorClasses = (colorTheme, isDarkMode) => {
   return themeColors[colorTheme] || themeColors.blue;
 };
 
+// Custom hook for responsive detection
+const useResponsiveDetection = () => {
+  const [isMobile, setIsMobile] = useState<boolean>(true); // Default to mobile for SSR
+
+  useEffect(() => {
+    // Immediate detection on client side
+    const checkResponsive = () => {
+      const width = window.innerWidth;
+      // Mobile: < 768px, Tablet: 768px - 1023px, Desktop: ≥ 1024px
+      setIsMobile(width < 768);
+    };
+
+    // Check immediately
+    checkResponsive();
+
+    // Set up resize listener with debounce
+    let resizeTimeout: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(checkResponsive, 100);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimeout);
+    };
+  }, []);
+
+  return isMobile;
+};
+
 // ============================================================================
 // SUB-COMPONENTS
 // ============================================================================
 
 // Scheme Card Component
-const SchemeCard = ({ scheme, isFocused, isDarkMode }) => {
+const SchemeCard: React.FC<SchemeCardProps> = ({ scheme, isFocused, isDarkMode, isMobile }) => {
   const colorClasses = getThemeColorClasses(scheme.colorTheme, isDarkMode);
   const IconComponent = scheme.icon;
 
@@ -165,17 +234,23 @@ const SchemeCard = ({ scheme, isFocused, isDarkMode }) => {
           : isDarkMode
           ? "border-slate-700 hover:border-slate-500"
           : "border-gray-200 hover:border-gray-300"
-      }`}
-      style={{ minHeight: 320 }}
+      } ${isMobile ? 'w-full max-w-sm mx-auto' : ''}`}
+      style={{ minHeight: isMobile ? 280 : 320 }}
     >
       <div className="flex h-full overflow-hidden rounded-2xl">
         {/* Accent Sidebar */}
         <div
-          className={`${colorClasses.accent} w-20 flex flex-col items-center justify-center flex-shrink-0 relative`}
-          style={{ minHeight: 320 }}
+          className={`${colorClasses.accent} ${
+            isMobile ? 'w-16' : 'w-20'
+          } flex flex-col items-center justify-center flex-shrink-0 relative`}
+          style={{ minHeight: isMobile ? 280 : 320 }}
         >
-          {isFocused ? (
-            <IconComponent className="text-white w-8 h-8" strokeWidth={2} />
+          {isFocused || isMobile ? (
+            <IconComponent 
+              className="text-white" 
+              size={isMobile ? 24 : 32} 
+              strokeWidth={2} 
+            />
           ) : (
             <span
               className="absolute left-1/2 bottom-4 transform -translate-x-1/2"
@@ -183,7 +258,7 @@ const SchemeCard = ({ scheme, isFocused, isDarkMode }) => {
                 writingMode: "vertical-lr",
                 direction: "rtl",
                 transform: "rotate(180deg)",
-                fontSize: "0.95rem",
+                fontSize: isMobile ? "0.8rem" : "0.95rem",
                 fontWeight: 500,
                 letterSpacing: "0.1em",
                 color: "white",
@@ -194,11 +269,14 @@ const SchemeCard = ({ scheme, isFocused, isDarkMode }) => {
             </span>
           )}
         </div>
+        
         {/* Card Content */}
-        <div className="flex-1 p-5 flex flex-col justify-between">
+        <div className={`flex-1 ${isMobile ? 'p-4' : 'p-5'} flex flex-col justify-between`}>
           <div>
             <h3
-              className={`text-xl font-bold mb-2 transition-all duration-300 ${
+              className={`${
+                isMobile ? 'text-lg' : 'text-xl'
+              } font-bold mb-2 transition-all duration-300 ${
                 isFocused
                   ? `${colorClasses.icon} underline decoration-2 underline-offset-4`
                   : colorClasses.text
@@ -210,7 +288,7 @@ const SchemeCard = ({ scheme, isFocused, isDarkMode }) => {
               {scheme.subtitle}
             </p>
             <p
-              className={`text-xs mb-4 ${colorClasses.subtitle} leading-relaxed`}
+              className={`text-xs mb-4 ${colorClasses.subtitle} leading-relaxed line-clamp-3`}
             >
               {scheme.description}
             </p>
@@ -245,20 +323,59 @@ const SchemeCard = ({ scheme, isFocused, isDarkMode }) => {
   );
 };
 
-// Fanned Card Deck Component
-const FannedDeck = ({ cards, isDarkMode, cardWidth = 480 }) => {
-  const [focusedCardIndex, setFocusedCardIndex] = useState(null);
-  const [hoveredCardIndex, setHoveredCardIndex] = useState(null);
+// Mobile Card Stack Component
+const MobileCardStack: React.FC<{ cards: Scheme[]; isDarkMode: boolean }> = ({ cards, isDarkMode }) => {
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+
+  return (
+    <div className="space-y-6 px-4 max-w-sm mx-auto w-full">
+      {cards.map((card, index) => (
+        <div 
+          key={card.id}
+          onClick={() => setExpandedCard(expandedCard === index ? null : index)}
+          className="cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] w-full"
+        >
+          <SchemeCard 
+            scheme={card} 
+            isFocused={expandedCard === index}
+            isDarkMode={isDarkMode}
+            isMobile={true}
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// Responsive Card Deck Component
+const ResponsiveCardDeck: React.FC<{ cards: Scheme[]; isDarkMode: boolean }> = ({ 
+  cards, 
+  isDarkMode 
+}) => {
+  const isMobile = useResponsiveDetection();
+  const [focusedCardIndex, setFocusedCardIndex] = useState<number | null>(null);
+  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
   const [windowWidth, setWindowWidth] = useState(0);
 
   useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const calculateCardOverlap = () => {
+  // Mobile layout - instant display
+  if (isMobile) {
+    return <MobileCardStack cards={cards} isDarkMode={isDarkMode} />;
+  }
+
+  // Desktop layout with responsive adjustments
+  const calculateCardOverlap = (): number => {
+    const cardWidth = Math.min(480, windowWidth * 0.8); // Responsive card width
+    
     if (hoveredCardIndex !== null && focusedCardIndex === null) {
       const totalWidth = Math.min(
         windowWidth - ANIMATION_CONFIG.containerPadding * 2,
@@ -282,7 +399,9 @@ const FannedDeck = ({ cards, isDarkMode, cardWidth = 480 }) => {
   };
 
   const centerCardIndex = Math.floor((cards.length - 1) / 2);
-  const getCardPositionStyle = (cardIndex) => {
+  
+  const getCardPositionStyle = (cardIndex: number) => {
+    const cardWidth = Math.min(480, windowWidth * 0.8); // Responsive card width
     const isFocused = focusedCardIndex === cardIndex;
     const overlapAmount = calculateCardOverlap();
     const baseOffset = (cardIndex - centerCardIndex) * overlapAmount;
@@ -294,6 +413,7 @@ const FannedDeck = ({ cards, isDarkMode, cardWidth = 480 }) => {
     const maxOffset =
       (totalWidth - cardWidth) / 2 - ANIMATION_CONFIG.containerPadding;
     const clampedOffset = Math.max(Math.min(offset, maxOffset), -maxOffset);
+    
     if (isFocused) {
       return {
         left: "50%",
@@ -302,8 +422,10 @@ const FannedDeck = ({ cards, isDarkMode, cardWidth = 480 }) => {
         zIndex: cards.length + 999,
         boxShadow: ANIMATION_CONFIG.boxShadow.focused,
         transition: ANIMATION_CONFIG.transition,
+        width: cardWidth,
       };
     }
+    
     if (focusedCardIndex !== null) {
       return {
         left: `calc(50% + ${clampedOffset}px)`,
@@ -313,8 +435,10 @@ const FannedDeck = ({ cards, isDarkMode, cardWidth = 480 }) => {
         boxShadow: ANIMATION_CONFIG.boxShadow.default,
         filter: ANIMATION_CONFIG.blurEffect,
         transition: ANIMATION_CONFIG.transition,
+        width: cardWidth,
       };
     }
+    
     return {
       left: `calc(50% + ${clampedOffset}px)`,
       top: `${ANIMATION_CONFIG.cardTopPosition.default}px`,
@@ -322,11 +446,13 @@ const FannedDeck = ({ cards, isDarkMode, cardWidth = 480 }) => {
       zIndex: cardIndex,
       boxShadow: ANIMATION_CONFIG.boxShadow.default,
       transition: ANIMATION_CONFIG.transition,
+      width: cardWidth,
     };
   };
 
   const handleDeckClick = () => setFocusedCardIndex(null);
-  const handleCardClick = (e, cardIndex) => {
+  
+  const handleCardClick = (e: React.MouseEvent, cardIndex: number) => {
     e.stopPropagation();
     setFocusedCardIndex(focusedCardIndex === cardIndex ? null : cardIndex);
     setHoveredCardIndex(null);
@@ -352,7 +478,6 @@ const FannedDeck = ({ cards, isDarkMode, cardWidth = 480 }) => {
           key={card.id}
           style={{
             position: "absolute",
-            width: cardWidth,
             cursor: focusedCardIndex === index ? "default" : "pointer",
             ...getCardPositionStyle(index),
           }}
@@ -366,6 +491,7 @@ const FannedDeck = ({ cards, isDarkMode, cardWidth = 480 }) => {
             scheme={card}
             isFocused={focusedCardIndex === index}
             isDarkMode={isDarkMode}
+            isMobile={false}
           />
         </div>
       ))}
@@ -374,13 +500,13 @@ const FannedDeck = ({ cards, isDarkMode, cardWidth = 480 }) => {
 };
 
 // Hero Section Component
-const HeroSection = ({ isDarkMode }) => (
+const HeroSection: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => (
   <section
     className={`relative overflow-hidden ${
       isDarkMode
         ? "bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
         : "bg-gradient-to-br from-blue-600 to-blue-900"
-    } py-6`}
+    } py-8 md:py-12`}
   >
     <div
       className="absolute inset-0 opacity-10"
@@ -389,11 +515,11 @@ const HeroSection = ({ isDarkMode }) => (
           'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
       }}
     ></div>
-    <div className="max-w-7xl mx-auto px-6 relative z-10 text-center text-white">
-      <h1 className="text-5xl md:text-6xl font-bold mb-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center text-white">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
         Our <span className="text-orange-400">Schemes</span>
       </h1>
-      <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+      <p className="text-base sm:text-lg md:text-xl text-blue-100 max-w-3xl mx-auto px-2">
         Discover comprehensive government services and schemes available for different citizen groups, all on one platform.
       </p>
     </div>
@@ -404,14 +530,16 @@ const HeroSection = ({ isDarkMode }) => (
 // MAIN PAGE COMPONENT
 // ============================================================================
 
-const SchemesPage = () => {
+const SchemesPage: React.FC = () => {
   const { theme } = useTheme();
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const isMobile = useResponsiveDetection();
 
   useEffect(() => {
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 600);
     };
+    
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -475,22 +603,43 @@ const SchemesPage = () => {
         .border-custom {
           border-color: var(--border-color);
         }
+        
+        /* Prevent horizontal scroll */
+        html, body {
+          overflow-x: hidden;
+          max-width: 100%;
+        }
+        
+        /* Line clamp utility */
+        .line-clamp-3 {
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
       `}</style>
+      
       <div className="min-h-screen transition-colors duration-500">
         <HeroSection isDarkMode={isDarkMode} />
-        <section className={`py-14 ${isDarkMode ? "bg-slate-900" : "bg-gray-100"}`}>
-          <FannedDeck cards={SCHEME_DATA} isDarkMode={isDarkMode} />
+        
+        <section className={`py-8 md:py-14 ${
+          isDarkMode ? "bg-slate-900" : "bg-gray-100"
+        }`}>
+          <ResponsiveCardDeck cards={SCHEME_DATA} isDarkMode={isDarkMode} />
         </section>
+        
         {showBackToTop && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-8 right-8 w-12 h-12 text-white rounded-full flex items-center justify-center shadow-lg transform hover:-translate-y-1 transition-all duration-300 z-50"
+            className={`fixed ${
+              isMobile ? 'bottom-6 right-6 w-10 h-10' : 'bottom-8 right-8 w-12 h-12'
+            } text-white rounded-full flex items-center justify-center shadow-lg transform hover:-translate-y-1 transition-all duration-300 z-50`}
             style={{
               backgroundColor: isDarkMode ? "#2563eb" : "#1d4ed8",
             }}
             aria-label="Back to top"
           >
-            <ArrowUp className="w-5 h-5" />
+            <ArrowUp className={isMobile ? "w-4 h-4" : "w-5 h-5"} />
           </button>
         )}
       </div>

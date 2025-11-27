@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import WelfareSchemesPage, { SchemeData, CarouselSlide, FilterCategory, IconName } from "../../../(common)/_welfSchComp";
 import axios from "axios";
 
@@ -24,7 +27,6 @@ const FARMER_CAROUSEL_SLIDES: CarouselSlide[] = [
   }
 ];
 
-
 const FARMER_FILTER_CATEGORIES: FilterCategory[] = [
   {
     heading: "Category",
@@ -43,18 +45,55 @@ const FARMER_FILTER_CATEGORIES: FilterCategory[] = [
   },
 ];
 
+export default function FarmerSchemesPage() {
+  const [schemes, setSchemes] = useState<SchemeData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export default async function FarmerSchemesPage() {
-  const response = await axios.get("http://localhost:3000/schemes/farmer_schemes/api");
-// THE FIX IS HERE:
-const FARMER_WELFARE_SCHEMES = response.data.data;
-console.log(FARMER_WELFARE_SCHEMES);
+  useEffect(() => {
+    const fetchSchemes = async () => {
+      try {
+        const response = await axios.get("/schemes/farmer_schemes/api");
+        setSchemes(response.data.data || []);
+        console.log('Farmer schemes loaded:', response.data.data);
+      } catch (err) {
+        console.error('Error fetching farmer schemes:', err);
+        setError('Failed to load schemes');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSchemes();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading farmer welfare schemes...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center text-red-600">
+          <p className="text-xl font-semibold mb-2">Error Loading Schemes</p>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <WelfareSchemesPage
       pageTitle="Farmer Welfare Schemes"
-      pageSubtitle="Discover government initiatives empowering women across India"
-      schemes={FARMER_WELFARE_SCHEMES}
+      pageSubtitle="Discover government initiatives empowering farmers across India"
+      schemes={schemes}
       carouselSlides={FARMER_CAROUSEL_SLIDES}
       filterCategories={FARMER_FILTER_CATEGORIES}
       accentColor={{ light: "blue-700", dark: "orange-400" }}
