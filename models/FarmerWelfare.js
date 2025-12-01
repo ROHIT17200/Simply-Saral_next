@@ -42,10 +42,10 @@ const keyInfoSchema = new mongoose.Schema(
 
 const FWSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  shortName: { type: String, required: true },        // similar to WW
-  keyInfo: keyInfoSchema,                             // similar to WW
+  shortName: { type: String, required: true },        
+  keyInfo: keyInfoSchema,                            
   shortDescription: { type: String, required: true },
-  detailedDescription: [{ type: String }],            // array like WW
+  detailedDescription: [{ type: String }],           
   portalLink: { type: String, required: true },
   benefits: [{ type: String }],
   eligibilityCriteria: [{ type: String }],
@@ -54,7 +54,7 @@ const FWSchema = new mongoose.Schema({
   applicationProcess: applicationProcessSchema,
   faqs: [faqSchema],
   imageUrl: { type: String },
-  launchedYear: { type: Number },                     // same type as WW
+  launchedYear: { type: Number },                     
   category: { type: String },
   detailedPage: { type: String },
   icon: { type: String },

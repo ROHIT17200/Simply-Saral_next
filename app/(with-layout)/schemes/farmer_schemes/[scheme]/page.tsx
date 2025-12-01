@@ -1,5 +1,5 @@
-import SchemeDetailPage from "../../../test/page"; 
-import { IWW } from "../../../test/page";
+import SchemeDetailPage from "../../../../(common)/detailedScheme"; 
+import { IWW } from "../../../../(common)/detailedScheme";
 import axios from "axios";
 
 
