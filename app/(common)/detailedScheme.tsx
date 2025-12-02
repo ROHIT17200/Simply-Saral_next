@@ -39,7 +39,6 @@ import {
 // CONSTANTS & CONFIGURATION
 // ============================================================================
 
-
 const NAVIGATION_SECTIONS = [
   { id: "key-info", icon: Info, label: "Key Information" },
   { id: "about", icon: Book, label: "About Scheme" },
@@ -52,7 +51,6 @@ const NAVIGATION_SECTIONS = [
 // ============================================================================
 // SHARED COMPONENTS
 // ============================================================================
-
 
 interface ImageModalProps {
   isOpen: boolean;
@@ -220,8 +218,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ isDarkMode, shortName,imageUr
           height: 100%;
           background: linear-gradient(
             to right,
-            rgba(123, 97, 255, 0.85) 0%,
-            rgba(123, 97, 255, 0.4) 100%
+            rgba(59, 130, 246, 0.85) 0%,
+            rgba(37, 99, 235, 0.4) 100% 
           );
           display: flex;
           flex-direction: column;
@@ -445,102 +443,106 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
         isDarkMode ? "bg-slate-950 text-slate-100" : "bg-gray-50 text-gray-900"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <HeroSection isDarkMode={isDarkMode} shortName={shortName} imageUrl={imageUrl} title={title} shortDescription={shortDescription} portalLink={portalLink}/>
       </div>
 
-      <main className="max-w-7xl mx-auto px-6 pb-16 relative z-20">
-        <div className="grid lg:grid-cols-12 gap-8">
-          {/* Sidebar */}
-          <aside className="lg:col-span-3">
-            <div className="sticky top-24 space-y-6">
-              <div
-                className={`rounded-2xl p-6 shadow-lg border ${
-                  isDarkMode
-                    ? "bg-slate-900 border-slate-800"
-                    : "bg-white border-gray-200"
-                }`}
-              >
-                <h3
-                  className={`font-bold text-lg mb-4 ${
-                    isDarkMode ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  Quick Navigation
-                </h3>
-                <nav className="space-y-2">
-                  {NAVIGATION_SECTIONS.map((section) => (
-                    <button
-                      key={section.id}
-                      onClick={() => scrollToSection(section.id)}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 ${
-                        isDarkMode
-                          ? "hover:bg-slate-800 text-slate-300"
-                          : "hover:bg-gray-100 text-gray-700"
-                      }`}
-                    >
-                      <section.icon className="w-4 h-4" />
-                      {section.label}
-                    </button>
-                  ))}
-                </nav>
-              </div>
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 pb-8 sm:pb-12 md:pb-16 relative z-20">
+        {/* Breadcrumb - Always visible for all screen sizes */}
+        <div className="mb-4 sm:mb-6">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm flex-wrap">
+            <Link
+              href="/"
+              className={`flex items-center gap-1 ${
+                isDarkMode
+                  ? "text-blue-400 hover:underline"
+                  : "text-blue-600 hover:underline"
+              }`}
+            >
+              <Home className="w-3 h-3 sm:w-4 sm:h-4" />
+              Home
+            </Link>
+            <ChevronRight className="w-3 h-3" />
+            <Link
+              href="/schemes"
+              className={
+                isDarkMode
+                  ? "text-blue-400 hover:underline"
+                  : "text-blue-600 hover:underline"
+              }
+            >
+              Schemes
+            </Link>
+            <ChevronRight className="w-3 h-3" />
+            <Link
+              href="/schemes/farmer_schemes"
+              className={
+                isDarkMode
+                  ? "text-blue-400 hover:underline"
+                  : "text-blue-600 hover:underline"
+              }
+            >
+              Farmer Schemes
+            </Link>
+            <ChevronRight className="w-3 h-3" />
+            <span
+              className={
+                isDarkMode ? "text-slate-400" : "text-gray-600"
+              }
+            >
+              {shortName.length > 20 ? `${shortName.substring(0, 20)}...` : shortName}
+            </span>
+          </div>
+        </div>
 
-              <div
-                className={`rounded-2xl p-4 shadow-lg border ${
-                  isDarkMode
-                    ? "bg-slate-900 border-slate-800"
-                    : "bg-white border-gray-200"
-                }`}
-              >
-                <div className="flex items-center gap-2 text-sm flex-wrap">
-                  <Link
-                    href="/"
-                    className={`flex items-center gap-1 ${
-                      isDarkMode
-                        ? "text-blue-400 hover:underline"
-                        : "text-blue-600 hover:underline"
-                    }`}
-                  >
-                    <Home className="w-4 h-4" />
-                    Home
-                  </Link>
-                  <ChevronRight className="w-3 h-3" />
-                  <Link
-                    href="/schemes"
-                    className={
-                      isDarkMode
-                        ? "text-blue-400 hover:underline"
-                        : "text-blue-600 hover:underline"
-                    }
-                  >
-                    Schemes
-                  </Link>
-                  <ChevronRight className="w-3 h-3" />
-                  <span
-                    className={
-                      isDarkMode ? "text-slate-400" : "text-gray-600"
-                    }
-                  >
-                    {shortName}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </aside>
-
-          {/* Main content */}
-          <section className="lg:col-span-9 space-y-8">
-            {/* Key Info */}
+        <div className="grid lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8">
+          {/* Sidebar - Hidden on mobile, visible on desktop */}
+          <aside className="hidden lg:block lg:col-span-3 sticky top-24 h-fit">
             <div
-              id="key-info"
               className={`rounded-2xl p-6 shadow-lg border ${
                 isDarkMode
                   ? "bg-slate-900 border-slate-800"
                   : "bg-white border-gray-200"
               }`}
             >
-              <div className="grid md:grid-cols-4 gap-4">
+              <h3
+                className={`font-bold text-lg mb-6 ${
+                  isDarkMode ? "text-white" : "text-gray-900"
+                }`}
+              >
+                Quick Navigation
+              </h3>
+              <nav className="space-y-2">
+                {NAVIGATION_SECTIONS.map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => scrollToSection(section.id)}
+                    className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all flex items-center gap-3 ${
+                      isDarkMode
+                        ? "hover:bg-slate-800 text-slate-300 active:bg-slate-700"
+                        : "hover:bg-gray-100 text-gray-700 active:bg-gray-200"
+                    }`}
+                  >
+                    <section.icon className="w-4 h-4 flex-shrink-0" />
+                    <span className="truncate">{section.label}</span>
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </aside>
+
+          {/* Main content - Enhanced spacing */}
+          <section className="lg:col-span-9 space-y-4 sm:space-y-6 md:space-y-8">
+            {/* Key Info - Enhanced mobile grid */}
+            <div
+              id="key-info"
+              className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border ${
+                isDarkMode
+                  ? "bg-slate-900 border-slate-800"
+                  : "bg-white border-gray-200"
+              }`}
+            >
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
                 {[
                   {
                     icon: Calendar,
@@ -599,24 +601,24 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                         : "text-blue-600"
                       : isDarkMode
                       ? "text-red-400"
-                      : "text-red-600";
+                        : "text-red-600";
 
                   return (
-                    <div key={index} className="text-center p-4">
+                    <div key={index} className="text-center p-2 sm:p-3">
                       <div
-                        className={`w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center ${bgClass}`}
+                        className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto mb-2 sm:mb-3 rounded-full flex items-center justify-center ${bgClass} transition-transform hover:scale-110`}
                       >
-                        <item.icon className={`w-8 h-8 ${textClass}`} />
+                        <item.icon className={`w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 ${textClass}`} />
                       </div>
                       <h4
-                        className={`text-sm font-semibold uppercase tracking-wide mb-1 ${
+                        className={`text-xs sm:text-sm font-semibold uppercase tracking-wide mb-1 ${
                           isDarkMode ? "text-slate-400" : "text-gray-600"
                         }`}
                       >
                         {item.label}
                       </h4>
                       <p
-                        className={`text-lg font-bold ${
+                        className={`text-xs sm:text-sm md:text-base lg:text-lg font-bold break-words ${
                           isDarkMode ? "text-white" : "text-gray-900"
                         }`}
                       >
@@ -628,56 +630,49 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
               </div>
             </div>
 
-            {/* About */}
+            {/* About Section - Enhanced typography */}
             <div
               id="about"
-              className={`rounded-2xl p-8 shadow-lg border ${
+              className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border ${
                 isDarkMode
                   ? "bg-slate-900 border-slate-800"
                   : "bg-white border-gray-200"
               }`}
             >
               <h2
-                className={`text-2xl font-bold mb-6 ${
+                className={`text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 ${
                   isDarkMode ? "text-white" : "text-gray-900"
                 }`}
               >
                 About {shortName}
               </h2>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {detailedDescription.map((para, idx) => (
                   <p
                     key={idx}
-                    className={
-                      isDarkMode
-                        ? "text-slate-300 leading-relaxed"
-                        : "text-gray-700 leading-relaxed"
-                    }
+                    className={`text-sm sm:text-base leading-relaxed ${
+                      isDarkMode ? "text-slate-300" : "text-gray-700"
+                    }`}
                   >
                     {para}
                   </p>
                 ))}
-                <div className="mt-6">
+                <div className="mt-4 sm:mt-6">
                   <h3
-                    className={`text-lg font-semibold mb-3 ${
+                    className={`text-lg sm:text-xl font-semibold mb-3 sm:mb-4 ${
                       isDarkMode ? "text-white" : "text-gray-900"
                     }`}
                   >
                     Key Highlights
                   </h3>
-                  <ul className="space-y-2">
+                  <ul className="space-y-2 sm:space-y-3">
                     {benefits.map((benefit, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-3"
-                      >
-                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <li key={idx} className="flex items-start gap-2 sm:gap-3">
+                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0 mt-0.5" />
                         <span
-                          className={
-                            isDarkMode
-                              ? "text-slate-300"
-                              : "text-gray-700"
-                          }
+                          className={`text-sm sm:text-base ${
+                            isDarkMode ? "text-slate-300" : "text-gray-700"
+                          }`}
                         >
                           {benefit}
                         </span>
@@ -688,45 +683,40 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
               </div>
             </div>
 
-            {/* Eligibility */}
+            {/* Eligibility Section - Better mobile layout */}
             <div
               id="eligibility"
-              className={`rounded-2xl p-8 shadow-lg border ${
+              className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border ${
                 isDarkMode
                   ? "bg-slate-900 border-slate-800"
                   : "bg-white border-gray-200"
               }`}
             >
               <h2
-                className={`text-2xl font-bold mb-6 ${
+                className={`text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 ${
                   isDarkMode ? "text-white" : "text-gray-900"
                 }`}
               >
                 Eligibility Criteria
               </h2>
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
                 <div>
                   <h3
-                    className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
+                    className={`text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2 ${
                       isDarkMode ? "text-green-400" : "text-green-600"
                     }`}
                   >
-                    <CheckCircle className="w-5 h-5" />
+                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6" />
                     Eligible Applicants
                   </h3>
-                  <ul className="space-y-3">
+                  <ul className="space-y-2 sm:space-y-3">
                     {eligibilityCriteria.map((item, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-3"
-                      >
+                      <li key={idx} className="flex items-start gap-2 sm:gap-3">
                         <span className="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0" />
                         <span
-                          className={
-                            isDarkMode
-                              ? "text-slate-300"
-                              : "text-gray-700"
-                          }
+                          className={`text-sm sm:text-base ${
+                            isDarkMode ? "text-slate-300" : "text-gray-700"
+                          }`}
                         >
                           {item}
                         </span>
@@ -736,26 +726,21 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                 </div>
                 <div>
                   <h3
-                    className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
+                    className={`text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2 ${
                       isDarkMode ? "text-red-400" : "text-red-600"
                     }`}
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-5 h-5 sm:w-6 sm:h-6" />
                     Not Eligible
                   </h3>
-                  <ul className="space-y-3">
+                  <ul className="space-y-2 sm:space-y-3">
                     {nonEligible.map((item, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-3"
-                      >
+                      <li key={idx} className="flex items-start gap-2 sm:gap-3">
                         <span className="w-2 h-2 rounded-full bg-red-500 mt-2 flex-shrink-0" />
                         <span
-                          className={
-                            isDarkMode
-                              ? "text-slate-300"
-                              : "text-gray-700"
-                          }
+                          className={`text-sm sm:text-base ${
+                            isDarkMode ? "text-slate-300" : "text-gray-700"
+                          }`}
                         >
                           {item}
                         </span>
@@ -766,24 +751,24 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
               </div>
             </div>
 
-            {/* Documents */}
+            {/* Documents Section - Using your table format */}
             <div
               id="documents"
-              className={`rounded-2xl p-8 shadow-lg border ${
+              className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border ${
                 isDarkMode
                   ? "bg-slate-900 border-slate-800"
                   : "bg-white border-gray-200"
               }`}
             >
               <h2
-                className={`text-2xl font-bold mb-6 ${
+                className={`text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 ${
                   isDarkMode ? "text-white" : "text-gray-900"
                 }`}
               >
                 Required Documents
               </h2>
               <p
-                className={`mb-6 ${
+                className={`text-sm sm:text-base mb-4 sm:mb-6 ${
                   isDarkMode ? "text-slate-300" : "text-gray-700"
                 }`}
               >
@@ -792,7 +777,89 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                 clear, legible, and in the specified format.
               </p>
 
-              <div className="overflow-x-auto">
+              {/* Mobile Card View */}
+              <div className="block md:hidden space-y-3">
+                {requiredDocuments.map((doc, index) => (
+                  <div
+                    key={doc.name + index}
+                    className={`border rounded-lg p-4 ${
+                      isDarkMode
+                        ? "border-slate-700 bg-slate-800"
+                        : "border-gray-200 bg-gray-50"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span
+                            className={`text-xs font-bold px-2 py-0.5 rounded ${
+                              isDarkMode
+                                ? "bg-blue-900 text-blue-300"
+                                : "bg-blue-100 text-blue-700"
+                            }`}
+                          >
+                            #{index + 1}
+                          </span>
+                        </div>
+                        <p className={`font-semibold text-sm sm:text-base mb-1 ${
+                          isDarkMode ? "text-white" : "text-gray-900"
+                        }`}>
+                          {doc.name}
+                        </p>
+                        <p
+                          className={`text-xs sm:text-sm ${
+                            isDarkMode
+                              ? "text-slate-400"
+                              : "text-gray-600"
+                          }`}
+                        >
+                          {doc.description}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-2 mt-3">
+                      {doc.image ? (
+                        <button
+                          onClick={() => openImageModal(doc.image!, doc.name)}
+                          className={`flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg transition-colors text-xs sm:text-sm font-medium ${
+                            isDarkMode
+                              ? "bg-blue-600 text-white hover:bg-blue-700"
+                              : "bg-blue-500 text-white hover:bg-blue-600"
+                          }`}
+                        >
+                          <FileText className="w-4 h-4" />
+                          View Sample
+                        </button>
+                      ) : null}
+                      {doc.officialLink ? (
+                        <a
+                          href={doc.officialLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-1.5 px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-xs sm:text-sm font-medium"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          Official Site
+                        </a>
+                      ) : null}
+                      {doc.videoGuide ? (
+                        <a
+                          href={doc.videoGuide}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-1.5 px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-xs sm:text-sm font-medium"
+                        >
+                          <Play className="w-4 h-4" />
+                          Video Guide
+                        </a>
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop Table View - Using your 5-column format */}
+              <div className="hidden md:block overflow-x-auto -mx-2 sm:-mx-0">
                 <table
                   className={`w-full border-collapse ${
                     isDarkMode ? "text-slate-300" : "text-gray-700"
@@ -802,23 +869,23 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                     <tr
                       className={`border-b ${
                         isDarkMode
-                          ? "border-slate-700"
-                          : "border-gray-200"
+                          ? "border-slate-700 bg-slate-800"
+                          : "border-gray-200 bg-gray-50"
                       }`}
                     >
-                      <th className="text-left py-4 px-4 font-semibold">
+                      <th className="text-left py-3 px-4 font-semibold text-sm">
                         Sr. No.
                       </th>
-                      <th className="text-left py-4 px-4 font-semibold">
+                      <th className="text-left py-3 px-4 font-semibold text-sm">
                         Document Name
                       </th>
-                      <th className="text-left py-4 px-4 font-semibold">
+                      <th className="text-left py-3 px-4 font-semibold text-sm">
                         Sample Image
                       </th>
-                      <th className="text-left py-4 px-4 font-semibold">
+                      <th className="text-left py-3 px-4 font-semibold text-sm">
                         Official Link
                       </th>
-                      <th className="text-left py-4 px-4 font-semibold">
+                      <th className="text-left py-3 px-4 font-semibold text-sm">
                         Video Guide
                       </th>
                     </tr>
@@ -833,12 +900,14 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                             : "border-gray-200 hover:bg-gray-50"
                         } transition-colors`}
                       >
-                        <td className="py-4 px-4 font-medium">
+                        <td className="py-4 px-4 font-medium text-sm">
                           {index + 1}
                         </td>
                         <td className="py-4 px-4">
                           <div>
-                            <p className="font-semibold">{doc.name}</p>
+                            <p className="font-semibold text-base">
+                              {doc.name}
+                            </p>
                             <p
                               className={`text-sm ${
                                 isDarkMode
@@ -856,7 +925,7 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                               onClick={() =>
                                 openImageModal(doc.image!, doc.name)
                               }
-                              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
+                              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-colors text-sm ${
                                 isDarkMode
                                   ? "bg-blue-600 text-white hover:bg-blue-700"
                                   : "bg-blue-500 text-white hover:bg-blue-600"
@@ -867,11 +936,11 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                             </button>
                           ) : (
                             <span
-                              className={
+                              className={`text-sm ${
                                 isDarkMode
-                                  ? "text-slate-500 text-sm"
-                                  : "text-gray-500 text-sm"
-                              }
+                                  ? "text-slate-500"
+                                  : "text-gray-500"
+                              }`}
                             >
                               Not available
                             </span>
@@ -883,18 +952,18 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                               href={doc.officialLink}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm"
                             >
                               <ExternalLink className="w-4 h-4" />
                               Official Site
                             </a>
                           ) : (
                             <span
-                              className={
+                              className={`text-sm ${
                                 isDarkMode
-                                  ? "text-slate-500 text-sm"
-                                  : "text-gray-500 text-sm"
-                              }
+                                  ? "text-slate-500"
+                                  : "text-gray-500"
+                              }`}
                             >
                               Not applicable
                             </span>
@@ -906,18 +975,18 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                               href={doc.videoGuide}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm"
                             >
                               <Play className="w-4 h-4" />
                               Video Guide
                             </a>
                           ) : (
                             <span
-                              className={
+                              className={`text-sm ${
                                 isDarkMode
-                                  ? "text-slate-500 text-sm"
-                                  : "text-gray-500 text-sm"
-                              }
+                                  ? "text-slate-500"
+                                  : "text-gray-500"
+                              }`}
                             >
                               Not available
                             </span>
@@ -930,66 +999,63 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
               </div>
             </div>
 
-            {/* Application Process */}
+            {/* Application Process - Enhanced mobile */}
             <div
               id="application"
-              className={`rounded-2xl p-8 shadow-lg border ${
+              className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border ${
                 isDarkMode
                   ? "bg-slate-900 border-slate-800"
                   : "bg-white border-gray-200"
               }`}
             >
               <h2
-                className={`text-2xl font-bold mb-6 ${
+                className={`text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 ${
                   isDarkMode ? "text-white" : "text-gray-900"
                 }`}
               >
                 Application Process
               </h2>
               <p
-                className={`mb-6 ${
+                className={`text-sm sm:text-base mb-4 sm:mb-6 ${
                   isDarkMode ? "text-slate-300" : "text-gray-700"
                 }`}
               >
-                Choose your preferred method to apply for the{" "}
-                {shortName} scheme:
+                Choose your preferred method to apply for the {shortName} scheme:
               </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 {/* Online */}
                 <div
-                  className={`rounded-xl p-6 border h-full ${
+                  className={`rounded-xl p-4 sm:p-6 border ${
                     isDarkMode
                       ? "bg-slate-800 border-slate-700"
                       : "bg-gray-50 border-gray-200"
                   }`}
                 >
                   <h3
-                    className={`text-xl font-semibold mb-4 flex items-center gap-2 ${
+                    className={`text-base sm:text-lg md:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2 ${
                       isDarkMode ? "text-white" : "text-gray-900"
                     }`}
                   >
-                    <span
-                      className={`text-2xl ${
-                        isDarkMode ? "text-purple-400" : "text-purple-600"
-                      }`}
-                    >
-                      🌐
-                    </span>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                      isDarkMode ? "bg-purple-600" : "bg-purple-100"
+                    }`}>
+                      <span className={`text-lg ${isDarkMode ? "text-white" : "text-purple-600"}`}>🌐</span>
+                    </div>
                     Online Application
                   </h3>
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {applicationProcess.online.map((step, idx) => (
                       <div
                         key={idx}
-                        className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${
+                        className={`flex items-start gap-2 sm:gap-3 p-3 sm:p-3.5 rounded-lg transition-colors ${
                           isDarkMode
                             ? "bg-slate-700 hover:bg-slate-600"
                             : "bg-white hover:bg-gray-100"
                         }`}
                       >
                         <div
-                          className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm ${
+                          className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs sm:text-sm ${
                             isDarkMode
                               ? "bg-purple-600 text-white"
                               : "bg-purple-100 text-purple-600"
@@ -998,7 +1064,7 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                           {idx + 1}
                         </div>
                         <p
-                          className={`pt-0.5 text-sm leading-relaxed ${
+                          className={`pt-0.5 text-xs sm:text-sm leading-relaxed ${
                             isDarkMode
                               ? "text-slate-300"
                               : "text-gray-700"
@@ -1013,38 +1079,36 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
 
                 {/* Offline */}
                 <div
-                  className={`rounded-xl p-6 border h-full ${
+                  className={`rounded-xl p-4 sm:p-6 border ${
                     isDarkMode
                       ? "bg-slate-800 border-slate-700"
                       : "bg-gray-50 border-gray-200"
                   }`}
                 >
                   <h3
-                    className={`text-xl font-semibold mb-4 flex items-center gap-2 ${
+                    className={`text-base sm:text-lg md:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2 ${
                       isDarkMode ? "text-white" : "text-gray-900"
                     }`}
                   >
-                    <span
-                      className={`text-2xl ${
-                        isDarkMode ? "text-blue-400" : "text-blue-600"
-                      }`}
-                    >
-                      📄
-                    </span>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                      isDarkMode ? "bg-blue-600" : "bg-blue-100"
+                    }`}>
+                      <span className={`text-lg ${isDarkMode ? "text-white" : "text-blue-600"}`}>📄</span>
+                    </div>
                     Offline Application
                   </h3>
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {applicationProcess.offline.map((step, idx) => (
                       <div
                         key={idx}
-                        className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${
+                        className={`flex items-start gap-2 sm:gap-3 p-3 sm:p-3.5 rounded-lg transition-colors ${
                           isDarkMode
                             ? "bg-slate-700 hover:bg-slate-600"
                             : "bg-white hover:bg-gray-100"
                         }`}
                       >
                         <div
-                          className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm ${
+                          className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs sm:text-sm ${
                             isDarkMode
                               ? "bg-blue-600 text-white"
                               : "bg-blue-100 text-blue-600"
@@ -1053,7 +1117,7 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                           {idx + 1}
                         </div>
                         <p
-                          className={`pt-0.5 text-sm leading-relaxed ${
+                          className={`pt-0.5 text-xs sm:text-sm leading-relaxed ${
                             isDarkMode
                               ? "text-slate-300"
                               : "text-gray-700"
@@ -1068,23 +1132,23 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
               </div>
             </div>
 
-            {/* FAQs */}
+            {/* FAQs - Better mobile interaction */}
             <div
               id="faqs"
-              className={`rounded-2xl p-8 shadow-lg border ${
+              className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border ${
                 isDarkMode
                   ? "bg-slate-900 border-slate-800"
                   : "bg-white border-gray-200"
               }`}
             >
               <h2
-                className={`text-2xl font-bold mb-6 ${
+                className={`text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 ${
                   isDarkMode ? "text-white" : "text-gray-900"
                 }`}
               >
                 Frequently Asked Questions
               </h2>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {faqs.map((faq, idx) => {
                   const active = activeFAQIndex === idx;
                   return (
@@ -1096,7 +1160,7 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                     >
                       <button
                         onClick={() => toggleFAQ(idx)}
-                        className={`w-full px-6 py-4 text-left flex items-center justify-between transition-colors ${
+                        className={`w-full px-4 sm:px-6 py-3 sm:py-4 text-left flex items-center justify-between transition-colors active:scale-[0.99] ${
                           isDarkMode
                             ? "hover:bg-slate-800"
                             : "hover:bg-gray-50"
@@ -1109,14 +1173,14 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                         }`}
                       >
                         <span
-                          className={`font-semibold ${
+                          className={`font-semibold text-sm sm:text-base pr-4 ${
                             isDarkMode ? "text-white" : "text-gray-900"
                           }`}
                         >
                           {faq.question}
                         </span>
                         <ChevronDown
-                          className={`w-5 h-5 transition-transform duration-300 ${
+                          className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${
                             active ? "rotate-180" : ""
                           } ${
                             isDarkMode
@@ -1127,22 +1191,22 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                       </button>
                       <div
                         className={`overflow-hidden transition-all duration-300 ${
-                          active ? "max-h-96" : "max-h-0"
+                          active ? "max-h-[500px]" : "max-h-0"
                         }`}
                       >
                         <div
-                          className={`px-6 py-4 border-t ${
+                          className={`px-4 sm:px-6 py-3 sm:py-4 border-t ${
                             isDarkMode
                               ? "border-slate-800 bg-slate-800/50"
                               : "border-gray-200 bg-gray-50"
                           }`}
                         >
                           <p
-                            className={
+                            className={`text-sm sm:text-base leading-relaxed ${
                               isDarkMode
-                                ? "text-slate-300 leading-relaxed"
-                                : "text-gray-700 leading-relaxed"
-                            }
+                                ? "text-slate-300"
+                                : "text-gray-700"
+                            }`}
                           >
                             {faq.answer}
                           </p>
@@ -1154,29 +1218,29 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
               </div>
             </div>
 
-            {/* Help Section */}
+            {/* Help Section - Responsive CTA */}
             <div
-              className={`rounded-2xl p-8 text-white shadow-lg ${
+              className={`rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 text-white shadow-lg ${
                 isDarkMode
-                  ? "bg-gradient-to-r from-purple-900 to-pink-900"
-                  : "bg-gradient-to-r from-purple-600 to-pink-600"
+                  ? "bg-gradient-to-r from-blue-900 to-blue-800"
+                  : "bg-gradient-to-r from-blue-600 to-blue-500"
               }`}
             >
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold mb-2">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
+                <div className="flex-1 text-center sm:text-left">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2">
                     Need Help with Your Application?
                   </h3>
-                  <p className="text-white/90">
+                  <p className="text-white/90 text-sm sm:text-base">
                     Our support team is here to help you with any queries about{" "}
                     {shortName}. Get personalized assistance for document
                     preparation and application submission.
                   </p>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="w-full sm:w-auto">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center gap-2 bg-white text-purple-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-all whitespace-nowrap hover:shadow-lg hover:-translate-y-0.5"
+                    className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 px-5 sm:px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-all whitespace-nowrap hover:shadow-lg hover:-translate-y-0.5 text-sm sm:text-base w-full sm:w-auto"
                   >
                     <Phone className="w-4 h-4" />
                     Contact Support
@@ -1188,6 +1252,7 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
         </div>
       </main>
 
+      {/* Image Modal */}
       <ImageModal
         isOpen={!!selectedImage}
         onClose={closeImageModal}
@@ -1195,16 +1260,17 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
         documentName={selectedImage?.name || ""}
       />
 
+      {/* Back to Top Button - Enhanced mobile */}
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 w-12 h-12 text-white rounded-full flex items-center justify-center shadow-lg transform hover:-translate-y-1 transition-all duration-300 z-50"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-11 h-11 sm:w-12 sm:h-12 text-white rounded-full flex items-center justify-center shadow-lg transform hover:-translate-y-1 active:scale-95 transition-all duration-300 z-50"
           style={{
-            backgroundColor: isDarkMode ? "#7c3aed" : "#9333ea",
+            backgroundColor: isDarkMode ? "#2563eb" : "#1d4ed8",
           }}
-          aria-label="Back to top"
+          aria-label="Scroll to top"
         >
-          <ArrowUp className="w-5 h-5" />
+          <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
       )}
     </div>
@@ -1212,4 +1278,3 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
 };
 
 export default SchemeDetailPage;
-
