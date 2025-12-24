@@ -48,7 +48,7 @@ interface ApplicationProcessState  {
   offline: string[];
 };
 
-interface SchemeFormData {
+export interface SchemeFormData {
   title: string;
   shortName: string;
   shortDescription: string;
@@ -59,7 +59,6 @@ interface SchemeFormData {
   category: string;
   detailedPage: string;
   icon: string;
-  isActive: boolean;
   keyInfo: {
     duration: string;
     amount: string;
@@ -77,53 +76,6 @@ interface SchemeFormData {
   faqs: IFaq[];
 }
 
-interface FormState{
-  form:SchemeFormData
-}
-
-
-const initialFormData: SchemeFormData = {
-  title: "",
-  shortName: "",
-  shortDescription: "",
-  detailedDescription: [""],
-  portalLink: "",
-  imageUrl: "",
-  launchedYear: new Date().getFullYear().toString(),
-  category: "Education",
-  detailedPage: "",
-  icon: "BookOpen",
-  isActive: true,
-  keyInfo: {
-    duration: "",
-    amount: "",
-    applyFrom: "",
-    lastDate: "",
-  },
-  benefits: [""],
-  eligibilityCriteria: [""],
-  nonEligible: [""],
-  requiredDocuments: [
-    {
-      name: "",
-      description: "",
-      image: "",
-      officialLink: "",
-      videoGuide: "",
-      importance: "Medium",
-    },
-  ],
-  applicationProcess: {
-    online: [""],
-    offline: [""],
-  },
-  faqs: [
-    {
-      question: "",
-      answer: "",
-    },
-  ],
-};
 
 export default function CreateSchemePage() {
   const { theme } = useTheme();
@@ -356,7 +308,7 @@ const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         </div>
       </div>
 
-      <form action={createScheme} className="space-y-8">
+      <form action={createScheme} encType="multipart/form-data" className="space-y-8">
             <div
               className={`p-6 rounded-xl shadow-lg ${
                 isDark ? "bg-slate-800" : "bg-white"
@@ -407,20 +359,17 @@ const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
                   </label>
                   <select
                     
-                    name="category"
+                    name="group"
                     className={`w-full px-4 py-2 rounded-lg border ${
                       isDark
                         ? "bg-slate-700 border-slate-600 text-white"
                         : "bg-white border-gray-300 text-gray-900"
                     }`}
                   >
-                    <option value="Education">Education</option>
-                    <option value="Farmers">Farmers</option>
-                    <option value="Women">Women</option>
-                    <option value="Youth">Youth</option>
-                    <option value="Senior Citizens">Senior Citizens</option>
-                    <option value="Healthcare">Healthcare</option>
-                    <option value="Employment">Employment</option>
+                    <option value="farmer">Farmers</option>
+                    <option value="women">Women</option>
+                    <option value="secondary">Senior Citizens</option>
+                    <option value="higher">Healthcare</option>
                   </select>
                 </div>
 
