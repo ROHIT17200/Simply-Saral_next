@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 import SchemeDetailPage from "../../../../(common)/detailedScheme"; 
 import { IWW } from "../../../../(common)/detailedScheme";
 import axios from "axios";

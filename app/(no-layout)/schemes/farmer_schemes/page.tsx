@@ -1,8 +1,11 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
+
 import WelfareSchemesPage, {
-  SchemeData,
   CarouselSlide,
   FilterCategory,
 } from "../../../(common)/_welfSchComp";
+
 import axios from "axios";
 
 const FARMER_CAROUSEL_SLIDES: CarouselSlide[] = [
