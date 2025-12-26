@@ -133,7 +133,7 @@ const data = [
     imageUrl: "/Images/women_welf/beti_bachao_beti_padhao.jpg",
     launchedYear: 2015,
     category: "Education & Skill Development",
-    detailedPage: "BBBP",
+    detailedPage: "women_welfare",
     icon: "GraduationCap",
   },
   {
@@ -276,7 +276,7 @@ const data = [
     imageUrl: "/Images/women_welf/ladki_bahin.jpg",
     launchedYear: 2023,
     category: "Financial Assistance & Social Security",
-    detailedPage: "LBY",
+    detailedPage: "women_welfare",
     icon: "Shield",
   },
 ];

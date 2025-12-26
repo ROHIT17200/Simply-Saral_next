@@ -133,7 +133,7 @@ const data = [
     imageUrl: "/Images/higher_Edu/PJVNB.jpg",
     launchedYear: 2011,
     category: "Scholarships & Financial Aid",
-    detailedPage: "/schemes/panjabrao-deshmukh-bhatta",
+    detailedPage: "higher_education",
     icon: "BadgeDollarSign",
   },
   {
@@ -242,7 +242,7 @@ const data = [
     imageUrl: "/Images/higher_Edu/POST.jpg",
     launchedYear: 1944,
     category: "Scholarships & Financial Aid",
-    detailedPage: "/schemes/post-matric-scholarship",
+    detailedPage: "higher_education",
     icon: "BadgeDollarSign",
   },
   {
@@ -341,7 +341,7 @@ const data = [
     imageUrl: "/Images/higher_Edu/RSMS.png",
     launchedYear: 2013,
     category: "Scholarships & Financial Aid",
-    detailedPage: "/schemes/shahu-maharaj-shishyavrutti",
+    detailedPage: "higher_education",
     icon: "BadgeDollarSign",
   },
   {
@@ -447,7 +447,7 @@ const data = [
     imageUrl: "/Images/higher_Edu/TF.jpg",
     launchedYear: 2003,
     category: "Scholarships & Financial Aid",
-    detailedPage: "/schemes/tuition-fee-reimbursement",
+    detailedPage: "higher_education",
     icon: "BadgeDollarSign",
   },
 ];

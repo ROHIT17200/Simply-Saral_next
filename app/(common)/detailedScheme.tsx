@@ -319,9 +319,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ isDarkMode, shortName,imageUr
 
 interface SchemeDetailLayoutProps {
   IWW: IWW;
+  module:String
 }
 
-const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
+const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW ,module }) => {
   const {
   title,
   shortName,
@@ -471,18 +472,18 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW }) => {
                   : "text-blue-600 hover:underline"
               }
             >
-              Schemes
+              Modules
             </Link>
             <ChevronRight className="w-3 h-3" />
             <Link
-              href="/schemes/farmer_schemes"
+              href={`/schemes/${module}`}
               className={
                 isDarkMode
                   ? "text-blue-400 hover:underline"
                   : "text-blue-600 hover:underline"
               }
             >
-              Farmer Schemes
+              SchemeList
             </Link>
             <ChevronRight className="w-3 h-3" />
             <span

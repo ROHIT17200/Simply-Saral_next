@@ -128,7 +128,7 @@ const data = [
     imageUrl: "/Images/farmer_welf/kisan_Credit_Card.jpg",
     launchedYear: 1998,
     category: "Credit & Loan Schemes",
-    detailedPage: "/schemes/kisan-credit-card",
+    detailedPage: "farmer_schemes",
     icon: "Banknote",
   },
   {
@@ -228,7 +228,7 @@ const data = [
     imageUrl: "/Images/farmer_welf/pradhan_Mantri_Fasal.jpg",
     launchedYear: 2016,
     category: "Crop Insurance & Risk Management",
-    detailedPage: "/schemes/pmfby",
+    detailedPage: "farmer_schemes",
     icon: "ShieldCheck",
   },
   {
@@ -336,7 +336,7 @@ const data = [
     imageUrl: "/Images/farmer_welf/PMKSY.jpg",
     launchedYear: 2015,
     category: "Irrigation & Water Management",
-    detailedPage: "/schemes/pmksy",
+    detailedPage: "farmer_schemes",
     icon: "Droplet",
   },
   {
@@ -446,7 +446,7 @@ const data = [
     imageUrl: "/Images/farmer_welf/pm_Kisan_Samman.jpg",
     launchedYear: 2019,
     category: "Income Support Schemes",
-    detailedPage: "/schemes/pm-kisan",
+    detailedPage: "farmer_schemes",
     icon: "BadgeDollarSign",
   },
 ];

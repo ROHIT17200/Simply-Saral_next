@@ -96,7 +96,7 @@ const schemes = [
     imageUrl: "/Images/school_Edu/NSQF.jpg",
     launchedYear: 2013,
     category: "Skill & Employability Enhancement",
-    detailedPage: "/schemes/vocational-education-nsqf",
+    detailedPage: "secondary_education",
     icon: "GraduationCap",
   },
   {
@@ -174,7 +174,7 @@ const schemes = [
     imageUrl: "/Images/school_Edu/Samagra.jpg",
     launchedYear: 2018,
     category: "School Infrastructure Development",
-    detailedPage: "/schemes/samagra-shiksha-abhiyan",
+    detailedPage: "secondary_education",
     icon: "Building",
   },
   {
@@ -264,7 +264,7 @@ const schemes = [
     imageUrl: "/Images/school_Edu/NMMSS.jpg",
     launchedYear: 2008,
     category: "Scholarships & Financial Aid",
-    detailedPage: "/schemes/nmmss",
+    detailedPage: "secondary_education",
     icon: "BadgeDollarSign",
   },
   {
@@ -335,7 +335,7 @@ const schemes = [
     imageUrl: "/Images/school_Edu/RMSA.jpg",
     launchedYear: 2009,
     category: "School Infrastructure Development",
-    detailedPage: "/schemes/rmsa",
+    detailedPage: "secondary_education",
     icon: "Building",
   },
 ];

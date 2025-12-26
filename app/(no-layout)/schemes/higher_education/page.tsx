@@ -2,7 +2,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
 
 import WelfareSchemesPage, { SchemeData, CarouselSlide, FilterCategory, IconName } from "../../../(common)/_welfSchComp";
-import axios from "axios";
+import con from '@/lib/conn.js';
+import HEM from '@/models/HigherEducation.js';
 
 const HIGHER_EDU_CAROUSEL_SLIDES: CarouselSlide[] = [
   {
@@ -49,15 +50,15 @@ const HIGHER_FILTER_CATEGORIES: FilterCategory[] = [
 ];
 
 export default async function HigherEducationPage() {
-    const response = await axios.get("http://localhost:3000/schemes/higher_education/api");
-    const  schemes= response.data.data;
-    console.log(schemes);
+    await con();
+    const docs = await HEM.find({}).lean();
+    const data = JSON.parse(JSON.stringify(docs));
 
     return(<WelfareSchemesPage
       sModule="higher_education"
       pageTitle="Higher Education Schemes"
       pageSubtitle="Discover government initiatives empowering students in higher education across India"
-      schemes={schemes}
+      schemes={data}
       carouselSlides={HIGHER_EDU_CAROUSEL_SLIDES}
       filterCategories={HIGHER_FILTER_CATEGORIES}
       accentColor={{ light: "blue-700", dark: "orange-400" }}
