@@ -95,7 +95,6 @@ export default function AdminLayout({
   const menuItems: MenuItem[] = [
     { label: "Dashboard", icon: LayoutDashboard, path: "/management" },
     { label: "All Schemes", icon: FileText, path: "/management/schemes" },
-    { label: "Users", icon: Users, path: "/management/users" },
   ];
 
   const SidebarHeader = () => (
@@ -134,42 +133,40 @@ export default function AdminLayout({
     </div>
   );
 
+  // ✅ FIXED: NavigationItem now returns ONLY the Link (no <li>)
   const NavigationItem = ({ item }: { item: MenuItem }) => {
     const isExpanded = sidebarOpen || isMobile;
 
     return (
-      <li>
-        <Link
-          href={item.path}
-          onClick={() => isMobile && setMobileMenuOpen(false)}
-          className={`w-full flex ${
-            isExpanded
-              ? "flex-row items-center gap-3 px-4"
-              : "flex-col items-center gap-1 px-2"
-          } py-3 rounded-lg transition-colors ${
-            isDark
-              ? "hover:bg-gray-800 text-gray-300 hover:text-white"
-              : "hover:bg-gray-100 text-gray-700 hover:text-gray-900"
+      <Link
+        href={item.path}
+        onClick={() => isMobile && setMobileMenuOpen(false)}
+        className={`w-full flex ${
+          isExpanded
+            ? "flex-row items-center gap-3 px-4"
+            : "flex-col items-center gap-1 px-2"
+        } py-3 rounded-lg transition-colors ${
+          isDark
+            ? "hover:bg-gray-800 text-gray-300 hover:text-white"
+            : "hover:bg-gray-100 text-gray-700 hover:text-gray-900"
+        }`}
+        title={!isExpanded ? item.label : undefined}
+      >
+        <item.icon
+          className={`flex-shrink-0 transition-all duration-300 ${
+            isExpanded ? "w-5 h-5" : "w-6 h-6"
           }`}
-          title={!isExpanded ? item.label : undefined}
-        >
-          <item.icon
-            className={`flex-shrink-0 transition-all duration-300 ${
-              isExpanded ? "w-5 h-5" : "w-6 h-6"
-            }`}
-          />
-          {!isExpanded && (
-            <span className="text-xs font-medium text-center leading-tight">
-              {item.label}
-            </span>
-          )}
-          {isExpanded && (
-            <span className="text-sm font-medium tracking-wide">
-              {item.label}
-            </span>
-          )}
-        </Link>
-      </li>
+        />
+        {isExpanded ? (
+          <span className="text-sm font-medium tracking-wide">
+            {item.label}
+          </span>
+        ) : (
+          <span className="text-xs font-medium text-center leading-tight">
+            {item.label}
+          </span>
+        )}
+      </Link>
     );
   };
 
@@ -196,13 +193,12 @@ export default function AdminLayout({
             isExpanded ? "w-5 h-5" : "w-6 h-6"
           }`}
         />
-        {!isExpanded && (
+        {isExpanded ? (
+          <span className="text-sm font-medium tracking-wide">Home</span>
+        ) : (
           <span className="text-xs font-medium text-center leading-tight">
             Home
           </span>
-        )}
-        {isExpanded && (
-          <span className="text-sm font-medium tracking-wide">Home</span>
         )}
       </Link>
     );
@@ -244,13 +240,12 @@ export default function AdminLayout({
             isExpanded ? "w-5 h-5" : "w-6 h-6"
           }`}
         />
-        {!isExpanded && (
+        {isExpanded ? (
+          <span className="text-sm font-medium tracking-wide">{label}</span>
+        ) : (
           <span className="text-xs font-medium text-center leading-tight">
             {label}
           </span>
-        )}
-        {isExpanded && (
-          <span className="text-sm font-medium tracking-wide">{label}</span>
         )}
       </button>
     );
@@ -277,7 +272,7 @@ export default function AdminLayout({
               isDark ? "bg-gray-700" : "bg-gray-300"
             }`} />
             
-            {/* Navigation Items - Dashboard, All Schemes, Users */}
+            {/* ✅ FIXED: Navigation Items - NO extra <li> wrapper */}
             {menuItems.map((item) => (
               <li key={item.path}>
                 <NavigationItem item={item} />
@@ -297,12 +292,6 @@ export default function AdminLayout({
           icon={isDark ? Sun : Moon}
           label={isDark ? "Light Mode" : "Dark Mode"}
           onClick={toggleTheme}
-        />
-        <FooterButton
-          icon={LogOut}
-          label="Logout"
-          onClick={handleLogout}
-          variant="danger"
         />
       </div>
     </>

@@ -430,7 +430,7 @@ const filteredSchemes = schemes.filter((scheme) => {
                             <Eye className="w-4 h-4" />
                           </Link>
                           <Link
-                            href={`/management/schemes/${scheme._id}`}
+                            href={`/management/schemes/${scheme.detailedPage}/${scheme._id}`}
                             className={`p-2 rounded-lg transition-all hover:scale-110 ${
                               isDark 
                                 ? 'hover:bg-slate-700 text-slate-400 hover:text-white' 

@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "@/app/context/ThemeContext";
-import createScheme from './newServerAction'
+import { useEffect } from "react";
 import {
   ArrowLeft,
   Save,
@@ -80,10 +80,13 @@ export interface SchemeFormData {
   faqs: IFaq[];
 }
 
-export default function CreateSchemePage() {
+type Props = {
+  scheme: any;
+};
+
+export default function CreateSchemePage({scheme}:Props) {
   const { theme } = useTheme();
   const router = useRouter();
-
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [externalImageUrl, setExternalImageUrl] = useState("");
   
@@ -142,6 +145,17 @@ export default function CreateSchemePage() {
 
   //state for benefits
   const [benefits, setBenefits] = useState<string[]>([""]);
+
+  const [shortName,setShortName]=useState<string>("");
+  const [schemeTitle,setSchemeTitle]=useState<string>("");
+  const [category,setCategory]=useState<string>("");
+  const [lauchedYear,setLaunchedYear]=useState<string>("");
+  const [portalLink,setPortalLink]=useState<string>("");
+  const [shortDescription,setShortDescription]=useState<string>("");
+  const [duration,setDuration]=useState<string>("");
+  const [amount, setAmount] = useState<string>("");
+  const [applyFrom, setApplyFrom] = useState<string>("");
+  const [lastDate, setLastDate] = useState<string>("");
 
   // <------------------------------------------->
   // <----------------------------------------->
@@ -287,6 +301,34 @@ export default function CreateSchemePage() {
     setExternalImageUrl(""); // clear URL if file chosen
   };
 
+  useEffect(() => {
+  async function fetchScheme() {
+      setShortName(scheme.shortName);
+      setSchemeTitle(scheme.title);
+      setCategory(scheme.category);
+      setEligibilityState({
+        eligible: scheme.eligibilityCriteria,  
+        nonEligible: scheme.nonEligible ?? [""],
+      });
+        setApplicationProcess({
+        online: scheme.applicationProcess.online,
+        offline: scheme.applicationProcess.offline });
+        setFaqs(scheme.faqs);
+        setDocuments(scheme.requiredDocuments);
+        setBenefits(scheme.benefits);
+        setShortDescription(scheme.shortDescription);
+        setDetailedDescription(scheme.detailedDescription);
+        setPortalLink(scheme.portalLink);
+        setLaunchedYear(scheme.launchedYear);
+        setAmount(scheme.keyInfo.amount);
+        setApplyFrom(scheme.keyInfo.applyFrom);
+        setLastDate(scheme.keyInfo.lastDate)
+
+  };
+    fetchScheme(); 
+  },[])
+
+
   return (
     <div className="space-y-6">
       {/* Header Section */}
@@ -307,7 +349,7 @@ export default function CreateSchemePage() {
           </div>
 
           <h1 className={`text-2xl lg:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            Create New Scheme
+            Update Scheme
           </h1>
 
           <p className={`mt-1 text-sm ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
@@ -318,7 +360,7 @@ export default function CreateSchemePage() {
 
       <form 
         id="scheme-form"
-        action={createScheme} 
+        action="/"
         encType="multipart/form-data" 
         className="space-y-6"
       >
@@ -360,6 +402,8 @@ export default function CreateSchemePage() {
                     type="text"
                     name="title"
                     required
+                    value={scheme.title}
+                    onChange={(e) => setSchemeTitle(e.target.value)}
                     className={`w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                       isDark
                         ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
@@ -377,6 +421,8 @@ export default function CreateSchemePage() {
                   <input
                     type="text"
                     name="shortName"
+                    value={shortName}
+                    onChange={(e) => setShortName(e.target.value)}
                     required
                     className={`w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                       isDark
@@ -396,6 +442,8 @@ export default function CreateSchemePage() {
                     <select
                       name="group"
                       required
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
                       className={`w-full px-4 py-2.5 rounded-lg border appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                         isDark
                           ? 'bg-slate-700 border-slate-600 text-white'
@@ -427,6 +475,8 @@ export default function CreateSchemePage() {
                     min="2000"
                     max="2030"
                     name="launchedYear"
+                    onChange={(e) => setLaunchedYear(e.target.value)}
+                    value={scheme.launchedYear}
                     required
                     className={`w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                       isDark
@@ -446,6 +496,8 @@ export default function CreateSchemePage() {
                     rows={3}
                     name="shortDescription"
                     required
+                    value={scheme.shortDescription}
+                    onChange={(e) => setShortDescription(e.target.value)}
                     className={`w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                       isDark
                         ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
@@ -524,6 +576,8 @@ export default function CreateSchemePage() {
                       type="url"
                       name="portalLink"
                       required
+                      value={scheme.portalLink}
+                      onChange={(e) => setPortalLink(e.target.value)}
                       className={`w-full pl-10 pr-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                         isDark
                           ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
@@ -577,6 +631,8 @@ export default function CreateSchemePage() {
                     type="text"
                     name="duration"
                     required
+                    value={scheme.keyInfo.duration}
+                    onChange={(e) => setDuration(e.target.value)}
                     className={`w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                       isDark
                         ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
@@ -596,6 +652,8 @@ export default function CreateSchemePage() {
                     type="text"
                     name="amount"
                     required
+                    value={scheme.keyInfo.amount}
+                    onChange={(e) => setAmount(e.target.value)}
                     className={`w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                       isDark
                         ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
@@ -614,6 +672,8 @@ export default function CreateSchemePage() {
                     type="date"
                     name="applyFrom"
                     required
+                    value={scheme.keyInfo.applyFrom}
+                    onChange={(e) => setApplyFrom(e.target.value)}
                     className={`w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                       isDark
                         ? 'bg-slate-700 border-slate-600 text-white'
@@ -631,6 +691,8 @@ export default function CreateSchemePage() {
                     type="date"
                     name="lastDate"
                     required
+                    value={scheme.keyInfo.lastDate}
+                    onChange={(e) => setLastDate(e.target.value)}
                     className={`w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                       isDark
                         ? 'bg-slate-700 border-slate-600 text-white'
@@ -793,7 +855,7 @@ export default function CreateSchemePage() {
           {expandedSections.benefits && (
             <div className="px-6 pb-6">
               <div className="space-y-4">
-                {benefits.map((benefit, index) => (
+                {benefits?.map((benefit, index) => (
                   <div key={index} className="flex gap-3 items-start">
                     <div className="flex-shrink-0 pt-2">
                       <CheckCircle className={`w-5 h-5 ${isDark ? 'text-green-400' : 'text-green-500'}`} />
@@ -825,7 +887,7 @@ export default function CreateSchemePage() {
                       </button>
                     )}
                   </div>
-                ))}
+                ))||null}
                 <button
                   type="button"
                   onClick={addBenefit}

@@ -437,6 +437,8 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW ,module }) =>
   };
 
   const closeImageModal = () => setSelectedImage(null);
+  const hasOnline = applicationProcess?.online?.length > 0;
+  const hasOffline = applicationProcess?.offline?.length > 0;
 
   return (
     <div
@@ -1001,137 +1003,139 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW ,module }) =>
             </div>
 
             {/* Application Process - Enhanced mobile */}
-            <div
-              id="application"
-              className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border ${
-                isDarkMode
-                  ? "bg-slate-900 border-slate-800"
-                  : "bg-white border-gray-200"
-              }`}
-            >
-              <h2
-                className={`text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 ${
-                  isDarkMode ? "text-white" : "text-gray-900"
-                }`}
-              >
-                Application Process
-              </h2>
-              <p
-                className={`text-sm sm:text-base mb-4 sm:mb-6 ${
-                  isDarkMode ? "text-slate-300" : "text-gray-700"
-                }`}
-              >
-                Choose your preferred method to apply for the {shortName} scheme:
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                {/* Online */}
+            {(hasOnline || hasOffline) && (
                 <div
-                  className={`rounded-xl p-4 sm:p-6 border ${
+                  id="application"
+                  className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border ${
                     isDarkMode
-                      ? "bg-slate-800 border-slate-700"
-                      : "bg-gray-50 border-gray-200"
+                      ? "bg-slate-900 border-slate-800"
+                      : "bg-white border-gray-200"
                   }`}
                 >
-                  <h3
-                    className={`text-base sm:text-lg md:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2 ${
+                  <h2
+                    className={`text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 ${
                       isDarkMode ? "text-white" : "text-gray-900"
                     }`}
                   >
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      isDarkMode ? "bg-purple-600" : "bg-purple-100"
-                    }`}>
-                      <span className={`text-lg ${isDarkMode ? "text-white" : "text-purple-600"}`}>🌐</span>
-                    </div>
-                    Online Application
-                  </h3>
-                  <div className="space-y-2 sm:space-y-3">
-                    {applicationProcess.online.map((step, idx) => (
-                      <div
-                        key={idx}
-                        className={`flex items-start gap-2 sm:gap-3 p-3 sm:p-3.5 rounded-lg transition-colors ${
-                          isDarkMode
-                            ? "bg-slate-700 hover:bg-slate-600"
-                            : "bg-white hover:bg-gray-100"
-                        }`}
-                      >
-                        <div
-                          className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs sm:text-sm ${
-                            isDarkMode
-                              ? "bg-purple-600 text-white"
-                              : "bg-purple-100 text-purple-600"
-                          }`}
-                        >
-                          {idx + 1}
-                        </div>
-                        <p
-                          className={`pt-0.5 text-xs sm:text-sm leading-relaxed ${
-                            isDarkMode
-                              ? "text-slate-300"
-                              : "text-gray-700"
-                          }`}
-                        >
-                          {step}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                    Application Process
+                  </h2>
 
-                {/* Offline */}
-                <div
-                  className={`rounded-xl p-4 sm:p-6 border ${
-                    isDarkMode
-                      ? "bg-slate-800 border-slate-700"
-                      : "bg-gray-50 border-gray-200"
-                  }`}
-                >
-                  <h3
-                    className={`text-base sm:text-lg md:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2 ${
-                      isDarkMode ? "text-white" : "text-gray-900"
+                  <p
+                    className={`text-sm sm:text-base mb-4 sm:mb-6 ${
+                      isDarkMode ? "text-slate-300" : "text-gray-700"
                     }`}
                   >
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      isDarkMode ? "bg-blue-600" : "bg-blue-100"
-                    }`}>
-                      <span className={`text-lg ${isDarkMode ? "text-white" : "text-blue-600"}`}>📄</span>
-                    </div>
-                    Offline Application
-                  </h3>
-                  <div className="space-y-2 sm:space-y-3">
-                    {applicationProcess.offline.map((step, idx) => (
+                    Choose your preferred method to apply for the {shortName} scheme:
+                  </p>
+
+                  <div
+                    className={`grid gap-4 sm:gap-6 ${
+                      hasOnline && hasOffline
+                        ? "grid-cols-1 md:grid-cols-2"
+                        : "grid-cols-1"
+                    }`}
+                  >
+                    {/* ONLINE */}
+                    {hasOnline && (
                       <div
-                        key={idx}
-                        className={`flex items-start gap-2 sm:gap-3 p-3 sm:p-3.5 rounded-lg transition-colors ${
+                        className={`rounded-xl p-4 sm:p-6 border ${
                           isDarkMode
-                            ? "bg-slate-700 hover:bg-slate-600"
-                            : "bg-white hover:bg-gray-100"
+                            ? "bg-slate-800 border-slate-700"
+                            : "bg-gray-50 border-gray-200"
                         }`}
                       >
-                        <div
-                          className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs sm:text-sm ${
-                            isDarkMode
-                              ? "bg-blue-600 text-white"
-                              : "bg-blue-100 text-blue-600"
+                        <h3
+                          className={`text-lg font-semibold mb-4 ${
+                            isDarkMode ? "text-white" : "text-gray-900"
                           }`}
                         >
-                          {idx + 1}
+                          🌐 Online Application
+                        </h3>
+
+                        <div className="space-y-3">
+                          {applicationProcess.online.map((step, idx) => (
+                            <div
+                              key={idx}
+                              className={`flex gap-3 p-3 rounded-lg ${
+                                isDarkMode
+                                  ? "bg-slate-700"
+                                  : "bg-white"
+                              }`}
+                            >
+                              <span
+                                className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
+                                  isDarkMode
+                                    ? "bg-purple-600 text-white"
+                                    : "bg-purple-100 text-purple-600"
+                                }`}
+                              >
+                                {idx + 1}
+                              </span>
+                              <p
+                                className={`text-sm ${
+                                  isDarkMode ? "text-slate-300" : "text-gray-700"
+                                }`}
+                              >
+                                {step}
+                              </p>
+                            </div>
+                          ))}
                         </div>
-                        <p
-                          className={`pt-0.5 text-xs sm:text-sm leading-relaxed ${
-                            isDarkMode
-                              ? "text-slate-300"
-                              : "text-gray-700"
+                      </div>
+                    )}
+
+                    {/* OFFLINE */}
+                    {hasOffline && (
+                      <div
+                        className={`rounded-xl p-4 sm:p-6 border ${
+                          isDarkMode
+                            ? "bg-slate-800 border-slate-700"
+                            : "bg-gray-50 border-gray-200"
+                        }`}
+                      >
+                        <h3
+                          className={`text-lg font-semibold mb-4 ${
+                            isDarkMode ? "text-white" : "text-gray-900"
                           }`}
                         >
-                          {step}
-                        </p>
+                          📄 Offline Application
+                        </h3>
+
+                        <div className="space-y-3">
+                          {applicationProcess.offline.map((step, idx) => (
+                            <div
+                              key={idx}
+                              className={`flex gap-3 p-3 rounded-lg ${
+                                isDarkMode
+                                  ? "bg-slate-700"
+                                  : "bg-white"
+                              }`}
+                            >
+                              <span
+                                className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
+                                  isDarkMode
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-blue-100 text-blue-600"
+                                }`}
+                              >
+                                {idx + 1}
+                              </span>
+                              <p
+                                className={`text-sm ${
+                                  isDarkMode ? "text-slate-300" : "text-gray-700"
+                                }`}
+                              >
+                                {step}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    ))}
+                    )}
                   </div>
                 </div>
-              </div>
-            </div>
+              )}
+
 
             {/* FAQs - Better mobile interaction */}
             <div
