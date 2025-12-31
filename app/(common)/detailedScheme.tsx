@@ -356,41 +356,6 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW ,module }) =>
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const savedTheme =
-      (localStorage.getItem("theme") as "light" | "dark") || "light";
-    setTheme(savedTheme);
-    document.body.className = savedTheme;
-
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "theme" && e.newValue) {
-        const newTheme = e.newValue as "light" | "dark";
-        setTheme(newTheme);
-        document.body.className = newTheme;
-      }
-    };
-
-    const handleThemeChange = (e: Event) => {
-      const custom = e as CustomEvent<"light" | "dark">;
-      const newTheme = custom.detail;
-      setTheme(newTheme);
-      document.body.className = newTheme;
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    window.addEventListener("themeChange", handleThemeChange as EventListener);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener(
-        "themeChange",
-        handleThemeChange as EventListener
-      );
-    };
-  }, [setTheme]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
       setShowBackToTop(window.scrollY > 600);
@@ -401,16 +366,9 @@ const SchemeDetailPage: React.FC<SchemeDetailLayoutProps> = ({ IWW ,module }) =>
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    if (typeof window !== "undefined") {
-      document.body.className = newTheme;
-      localStorage.setItem("theme", newTheme);
-      window.dispatchEvent(
-        new CustomEvent<"light" | "dark">("themeChange", { detail: newTheme })
-      );
-    }
-  };
+  const newTheme = theme === "light" ? "dark" : "light";
+  setTheme(newTheme);  // Provider handles localStorage + body.className
+};
 
   const scrollToTop = () => {
     if (typeof window === "undefined") return;

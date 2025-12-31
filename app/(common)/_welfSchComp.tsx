@@ -560,30 +560,6 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
   const hasActiveFilters = searchQuery !== "" || selectedCategories.length > 0 || selectedYears.length > 0 || selectedCategory !== "All";
 
   useEffect(() => {
-    const savedTheme = (localStorage.getItem("theme") as "light" | "dark") || "light";
-    setTheme(savedTheme);
-    document.body.className = savedTheme;
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "theme" && e.newValue) {
-        const newTheme = e.newValue as "light" | "dark";
-        setTheme(newTheme);
-        document.body.className = newTheme;
-      }
-    };
-    const handleThemeChange = (e: CustomEvent) => {
-      const newTheme = e.detail as "light" | "dark";
-      setTheme(newTheme);
-      document.body.className = newTheme;
-    };
-    window.addEventListener("storage", handleStorageChange);
-    window.addEventListener("themeChange" as any, handleThemeChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("themeChange" as any, handleThemeChange);
-    };
-  }, [setTheme]);
-
-  useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
     }, 4000);
@@ -597,13 +573,12 @@ const WelfareSchemesPage: React.FC<WelfareSchemesProps> = ({
     };
   }, [carouselSlides.length]);
 
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    document.body.className = newTheme;
-    localStorage.setItem("theme", newTheme);
-    window.dispatchEvent(new CustomEvent("themeChange", { detail: newTheme }));
-  };
+
+    const toggleTheme = () => {
+      const newTheme = theme === "light" ? "dark" : "light";
+      setTheme(newTheme);  // ← SINGLE LINE - Provider does the rest!
+    };
+
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
